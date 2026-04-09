@@ -78,10 +78,12 @@ function App() {
       
       rec.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        setInputValue(transcript);
         const numero = textToNumber(transcript);
         if (numero > 0) {
           agregarVentaRef.current(numero);
+          setInputValue('');
+        } else {
+          setInputValue(transcript);
         }
         setIsListening(false);
       };
