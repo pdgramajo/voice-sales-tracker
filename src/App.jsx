@@ -50,13 +50,13 @@ function App() {
   const { ventas, totalDia, agregarVenta, eliminarVenta, obtenerHistorial, cerrarDia } = useVentas();
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved || 'light';
   });
   const agregarVentaRef = useRef(agregarVenta);
+  const recognitionRef = useRef(null);
   
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -70,7 +70,7 @@ function App() {
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
-    if (SpeechRecognition) {
+    if (SpeechRecognition && !recognitionRef.current) {
       const rec = new SpeechRecognition();
       rec.continuous = false;
       rec.interimResults = false;
@@ -94,7 +94,7 @@ function App() {
         setIsListening(false);
       };
       
-      setRecognition(rec);
+      recognitionRef.current = rec;
     }
   }, []);
 
@@ -103,15 +103,16 @@ function App() {
   }, []);
 
   const toggleListening = useCallback(() => {
-    if (!recognition) return;
+    const rec = recognitionRef.current;
+    if (!rec) return;
     
     if (isListening) {
-      recognition.stop();
+      rec.stop();
     } else {
-      recognition.start();
+      rec.start();
       setIsListening(true);
     }
-  }, [recognition, isListening]);
+  }, [isListening]);
 
   const handleInputSubmit = () => {
     const numero = parseFloat(inputValue);
@@ -160,7 +161,7 @@ function App() {
             <button 
               className={`mic-btn ${isListening ? 'listening' : ''}`}
               onClick={toggleListening}
-              disabled={!recognition}
+              disabled={!recognitionRef.current}
             >
               {isListening ? '⏹' : '🎤'}
             </button>
