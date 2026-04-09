@@ -1,16 +1,56 @@
-# React + Vite
+# Voice Sales Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern voice-controlled daily sales tracking application built with React. Dictate sale amounts in Spanish, track transactions with timestamps, view historical data, and export daily reports as PDF.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Voice Input**: Dictate sale amounts in Spanish (e.g., "mil quinientos" → $1,500.00)
+- **Real-time Tracking**: Record sales with automatic timestamps (day, time)
+- **Daily Totals**: Automatically calculate and display daily sales sum
+- **Transaction History**: View all sales for the current day with delete capability
+- **Historical Records**: Access summaries from previous days
+- **PDF Export**: Download a formatted daily report when closing the day
+- **Dark/Light Mode**: Toggle between themes with persistent preference
+- **Local Storage**: All data persists in your browser
 
-## React Compiler
+## Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+🎤 Dictate: "quinientos" → Save → ✓ Sale recorded: $500.00 (jueves 9 3:45:46 pm)
+📊 Total updates automatically
+📄 Click "Close Day" → PDF downloads with all transactions
+```
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** + Vite
+- **jsPDF** for PDF generation
+- **Web Speech API** for voice recognition
+- **CSS Variables** for theming
+
+## How to Run
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd voice-sales-tracker
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+The app will be available at `http://localhost:5173`
+
+## Usage
+
+1. **Add a sale**: Click the microphone to dictate, or type a number/word (e.g., "dos mil")
+2. **Save**: Click "Guardar" to record the transaction
+3. **Delete**: Click × on any sale to remove it
+4. **Close Day**: Click "Cerrar Día" to save to history and download PDF
+5. **Toggle Theme**: Click the sun/moon icon in the top-right corner
