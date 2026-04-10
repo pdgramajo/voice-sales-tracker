@@ -31,11 +31,35 @@ const DownloadIcon = () => (
   </svg>
 );
 
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
+const MoneyIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="1" x2="12" y2="23"/>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+  </svg>
+);
+
+const TransferIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="17 1 21 5 17 9"/>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+    <polyline points="7 23 3 19 7 15"/>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+  </svg>
+);
+
 const formatCurrency = (amount) => {
+  const safeAmount = isNaN(amount) ? 0 : amount;
   return new Intl.NumberFormat('es-MX', {
     style: 'currency',
     currency: 'MXN'
-  }).format(amount);
+  }).format(safeAmount);
 };
 
 const formatDate = () => {
@@ -47,16 +71,23 @@ const formatDate = () => {
 };
 
 function App() {
-  const { ventas, totalDia, agregarVenta, eliminarVenta, obtenerHistorial, cerrarDia } = useVentas();
+  const { ventas, gastos, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, obtenerHistorial, cerrarDia } = useVentas();
+  const totalVentas = efectivoTotal + transferenciaTotal;
   const [inputValue, setInputValue] = useState('');
+  const [metodoPago, setMetodoPago] = useState('efectivo');
+  const [gastoDescripcion, setGastoDescripcion] = useState('');
+  const [gastoMonto, setGastoMonto] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showGastoModal, setShowGastoModal] = useState(false);
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved || 'light';
   });
   const agregarVentaRef = useRef(agregarVenta);
+  const metodoPagoRef = useRef(metodoPago);
   const recognitionRef = useRef(null);
+  const gastoInputRef = useRef(null);
   
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -66,6 +97,10 @@ function App() {
   useEffect(() => {
     agregarVentaRef.current = agregarVenta;
   }, [agregarVenta]);
+
+  useEffect(() => {
+    metodoPagoRef.current = metodoPago;
+  }, [metodoPago]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -80,7 +115,7 @@ function App() {
         const transcript = event.results[0][0].transcript;
         const numero = textToNumber(transcript);
         if (numero > 0) {
-          agregarVentaRef.current(numero);
+          agregarVentaRef.current(numero, metodoPagoRef.current);
           setInputValue('');
         } else {
           setInputValue(transcript);
@@ -99,6 +134,12 @@ function App() {
       recognitionRef.current = rec;
     }
   }, []);
+
+  useEffect(() => {
+    if (showGastoModal && gastoInputRef.current) {
+      setTimeout(() => gastoInputRef.current.focus(), 100);
+    }
+  }, [showGastoModal]);
 
   const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -119,16 +160,45 @@ function App() {
   const handleInputSubmit = () => {
     const numero = parseFloat(inputValue);
     if (!isNaN(numero) && numero > 0) {
-      agregarVenta(numero);
+      agregarVenta(numero, metodoPago);
       setInputValue('');
     } else {
       const numeroLetras = textToNumber(inputValue);
       if (numeroLetras > 0) {
-        agregarVenta(numeroLetras);
+        agregarVenta(numeroLetras, metodoPago);
         setInputValue('');
       }
     }
   };
+
+  const handleGastoSubmit = (e) => {
+    e.preventDefault();
+    const monto = parseFloat(gastoMonto);
+    if (!isNaN(monto) && monto > 0 && gastoDescripcion.trim()) {
+      agregarGasto(monto, gastoDescripcion.trim());
+      setGastoDescripcion('');
+      setGastoMonto('');
+      setShowGastoModal(false);
+    }
+  };
+
+  const openGastoModal = () => {
+    setGastoDescripcion('');
+    setGastoMonto('');
+    setShowGastoModal(true);
+  };
+
+  const closeGastoModal = () => {
+    setShowGastoModal(false);
+  };
+
+  const enCaja = efectivoTotal - totalGastos;
+
+  const allItems = [...ventas, ...gastos].sort((a, b) => {
+    if (a.tipo === 'gasto' && b.tipo === 'venta') return -1;
+    if (a.tipo === 'venta' && b.tipo === 'gasto') return 1;
+    return b.timestamp - a.timestamp;
+  });
 
   return (
     <>
@@ -145,13 +215,63 @@ function App() {
         </header>
 
         <section className="total-section">
-          <h2>Total del Día</h2>
-          <p className="total-amount">{formatCurrency(totalDia)}</p>
-          <p className="ventas-count"><span>{ventas.length}</span> venta{ventas.length !== 1 ? 's' : ''} registradas</p>
+          <h2>Resumen del Día</h2>
+          
+          <div className="totals-grid">
+            <div className="total-item">
+              <span className="total-label">Ventas</span>
+              <span className="total-value success">{formatCurrency(totalVentas)}</span>
+              <div className="total-sub">
+                <span className="efectivo-label">
+                  <MoneyIcon /> E: {formatCurrency(efectivoTotal)}
+                </span>
+                <span className="transferencia-label">
+                  <TransferIcon /> T: {formatCurrency(transferenciaTotal)}
+                </span>
+              </div>
+            </div>
+            <div className="total-item">
+              <span className="total-label">Gastos</span>
+              <span className="total-value danger">-{formatCurrency(totalGastos)}</span>
+            </div>
+          </div>
+          
+          <div className="en-caja-row">
+            <div className="en-caja-item">
+              <span className="en-caja-label">En Caja</span>
+              <span className={`en-caja-value ${enCaja >= 0 ? 'positive' : 'negative'}`}>
+                {formatCurrency(enCaja)}
+              </span>
+            </div>
+            <div className="transferencia-item">
+              <span className="transferencia-label-text">Transferencia</span>
+              <span className="transferencia-value">
+                {formatCurrency(transferenciaTotal)}
+              </span>
+            </div>
+          </div>
         </section>
 
         <section className="voice-section">
           <h3>Dictar Venta</h3>
+          
+          <div className="metodo-pago">
+            <button 
+              type="button"
+              className={`metodo-btn ${metodoPago === 'efectivo' ? 'active' : ''}`}
+              onClick={() => setMetodoPago('efectivo')}
+            >
+              <MoneyIcon /> Efectivo
+            </button>
+            <button 
+              type="button"
+              className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
+              onClick={() => setMetodoPago('transferencia')}
+            >
+              <TransferIcon /> Transferencia
+            </button>
+          </div>
+          
           <div className="voice-controls">
             <input
               type="text"
@@ -171,11 +291,14 @@ function App() {
           <button className="save-btn" onClick={handleInputSubmit}>
             Guardar
           </button>
+          <button className="gasto-btn-secondary" onClick={openGastoModal}>
+            + Agregar Gasto
+          </button>
         </section>
 
         <section className="ventas-section">
           <div className="ventas-header">
-            <h3>Ventas del Día</h3>
+            <h3>Movimientos del Día</h3>
             <button 
               className="history-btn"
               onClick={() => setShowHistory(!showHistory)}
@@ -193,9 +316,15 @@ function App() {
                 <ul>
                   {obtenerHistorial().slice().reverse().map((item, index) => (
                     <li key={index}>
-                      <span className="historial-fecha">{item.fecha}</span>
-                      <span className="historial-total">{formatCurrency(item.total)}</span>
-                      <span className="historial-cantidad">({item.cantidadVentas} ventas)</span>
+                      <div className="historial-info">
+                        <span className="historial-fecha">{item.fecha}</span>
+                        <span className="historial-detalles">
+                          Ventas: {formatCurrency(item.totalVentas)} | Gastos: {formatCurrency(item.totalGastos)}
+                        </span>
+                      </div>
+                      <span className="historial-ganancia">
+                        {formatCurrency(item.gananciaNeta)}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -203,19 +332,28 @@ function App() {
             </div>
           )}
 
-          {ventas.length === 0 ? (
-            <p className="no-ventas">No hay ventas registradas hoy</p>
+          {allItems.length === 0 ? (
+            <p className="no-ventas">No hay movimientos registrados hoy</p>
           ) : (
             <ul className="ventas-list">
-              {ventas.map((venta) => (
-                <li key={venta.id} className="venta-item">
+              {allItems.map((item) => (
+                <li key={item.id} className={`venta-item ${item.tipo}`}>
                   <div className="venta-info">
-                    <span className="venta-monto">{formatCurrency(venta.monto)}</span>
-                    <span className="venta-fecha">{venta.fechaCompleta}</span>
+                    <span className={`venta-monto ${item.tipo}`}>
+                      {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
+                      {item.tipo === 'venta' && (
+                        <span className={`metodo-badge ${item.metodoPago}`}>
+                          ({item.metodoPago === 'efectivo' ? 'E' : 'T'})
+                        </span>
+                      )}
+                    </span>
+                    <span className="venta-fecha">
+                      {item.tipo === 'venta' ? item.fechaCompleta : item.descripcion}
+                    </span>
                   </div>
                   <button 
                     className="delete-btn"
-                    onClick={() => eliminarVenta(venta.id)}
+                    onClick={() => item.tipo === 'venta' ? eliminarVenta(item.id) : eliminarGasto(item.id)}
                   >
                     ×
                   </button>
@@ -230,6 +368,48 @@ function App() {
           Cerrar Día
         </button>
       </div>
+
+      {showGastoModal && (
+        <div className="modal-overlay" onClick={closeGastoModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Agregar Gasto</h3>
+              <button className="modal-close" onClick={closeGastoModal}>
+                <CloseIcon />
+              </button>
+            </div>
+            <form onSubmit={handleGastoSubmit} className="modal-form">
+              <input
+                ref={gastoInputRef}
+                type="text"
+                value={gastoDescripcion}
+                onChange={(e) => setGastoDescripcion(e.target.value)}
+                placeholder="Descripción del gasto..."
+                className="modal-input"
+                required
+              />
+              <input
+                type="number"
+                value={gastoMonto}
+                onChange={(e) => setGastoMonto(e.target.value)}
+                placeholder="$0.00"
+                step="0.01"
+                min="0"
+                className="modal-input"
+                required
+              />
+              <div className="modal-actions">
+                <button type="button" className="modal-cancel" onClick={closeGastoModal}>
+                  Cancelar
+                </button>
+                <button type="submit" className="modal-submit">
+                  Agregar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
