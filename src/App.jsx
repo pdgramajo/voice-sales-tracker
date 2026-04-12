@@ -99,6 +99,14 @@ const ReceiptIcon = () => (
   </svg>
 );
 
+const PlusCircleIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="16"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+  </svg>
+);
+
 const formatCurrency = (amount) => {
   const safeAmount = isNaN(amount) ? 0 : amount;
   return new Intl.NumberFormat('es-MX', {
@@ -212,6 +220,11 @@ function App() {
     } else {
       rec.start();
       setIsListening(true);
+      setTimeout(() => {
+        if (rec && isListening) {
+          rec.stop();
+        }
+      }, 4000);
     }
   }, [isListening]);
 
@@ -261,65 +274,52 @@ function App() {
       case 'movimientos':
         return (
           <>
-            <section className="quick-summary">
-              <div className="summary-grid">
-                <div className="summary-item efectivo">
-                  <span className="summary-label"><MoneyIcon /> Efectivo</span>
-                  <span className="summary-value">{formatCurrency(ventasEfectivo)}</span>
+            <section className="quick-summary compact">
+              <div className="summary-row-compact">
+                <div className="summary-col">
+                  <span className="label-efectivo"><MoneyIcon /> Efectivo</span>
+                  <span className="value">{formatCurrency(ventasEfectivo)}</span>
                 </div>
-                <div className="summary-item transferencia">
-                  <span className="summary-label"><TransferIcon /> Transferencia</span>
-                  <span className="summary-value">{formatCurrency(transferenciaTotal)}</span>
+                <div className="summary-col">
+                  <span className="label-transferencia"><TransferIcon /> Transferencia</span>
+                  <span className="value blue">{formatCurrency(transferenciaTotal)}</span>
                 </div>
               </div>
-              <div className="summary-totals">
-                <div className="summary-total-item">
-                  <span>Ventas Totales</span>
-                  <strong>{formatCurrency(totalVentas)}</strong>
+              <div className="summary-row-compact">
+                <div className="summary-col">
+                  <span className="label">Ventas Totales</span>
+                  <span className="value">{formatCurrency(totalVentas)}</span>
                 </div>
-                <div className="summary-total-item">
-                  <span>Saldo</span>
-                  <strong className={enCaja >= 0 ? 'positive' : 'negative'}>{formatCurrency(enCaja)}</strong>
+                <div className="summary-col">
+                  <span className="label">Saldo</span>
+                  <span className={`value ${enCaja >= 0 ? 'positive' : 'negative'}`}>{formatCurrency(enCaja)}</span>
                 </div>
               </div>
             </section>
 
-            <section className="voice-section">
-              <div className="metodo-pago">
+            <section className="quick-mic-section">
+              <div className="metodo-pago-mini">
                 <button 
                   type="button"
-                  className={`metodo-btn ${metodoPago === 'efectivo' ? 'active' : ''}`}
+                  className={`metodo-btn-mini ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
                   onClick={() => setMetodoPago('efectivo')}
                 >
-                  <MoneyIcon /> Efectivo
+                  <MoneyIcon />
                 </button>
                 <button 
                   type="button"
-                  className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
+                  className={`metodo-btn-mini ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
                   onClick={() => setMetodoPago('transferencia')}
                 >
-                  <TransferIcon /> Transferencia
+                  <TransferIcon />
                 </button>
               </div>
-              
-              <div className="voice-controls">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Di un número o escríbelo..."
-                  className="voice-input"
-                />
-                <button 
-                  className={`mic-btn ${isListening ? 'listening' : ''}`}
-                  onClick={toggleListening}
-                  disabled={!recognitionRef.current}
-                >
-                  {isListening ? '⏹' : '🎤'}
-                </button>
-              </div>
-              <button className="save-btn" onClick={handleInputSubmit}>
-                Guardar
+              <button 
+                className={`mic-btn-large ${isListening ? 'listening' : ''}`}
+                onClick={toggleListening}
+                disabled={!recognitionRef.current}
+              >
+                {isListening ? '⏹' : '🎤'}
               </button>
             </section>
 
@@ -362,6 +362,49 @@ function App() {
               )}
             </section>
           </>
+        );
+
+      case 'agregar-venta':
+        return (
+          <section className="venta-form-section">
+            <h2>Agregar Venta</h2>
+            <div className="metodo-pago">
+              <button 
+                type="button"
+                className={`metodo-btn ${metodoPago === 'efectivo' ? 'active' : ''}`}
+                onClick={() => setMetodoPago('efectivo')}
+              >
+                <MoneyIcon /> Efectivo
+              </button>
+              <button 
+                type="button"
+                className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
+                onClick={() => setMetodoPago('transferencia')}
+              >
+                <TransferIcon /> Transferencia
+              </button>
+            </div>
+            
+            <div className="voice-controls">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Di un número o escríbelo..."
+                className="voice-input"
+              />
+              <button 
+                className={`mic-btn ${isListening ? 'listening' : ''}`}
+                onClick={toggleListening}
+                disabled={!recognitionRef.current}
+              >
+                {isListening ? '⏹' : '🎤'}
+              </button>
+            </div>
+            <button className="save-btn" onClick={handleInputSubmit}>
+              Guardar
+            </button>
+          </section>
         );
 
       case 'agregar-gasto':
@@ -501,6 +544,7 @@ function App() {
   const getScreenTitle = () => {
     switch (currentScreen) {
       case 'movimientos': return 'Movimientos';
+      case 'agregar-venta': return 'Agregar Venta';
       case 'agregar-gasto': return 'Agregar Gasto';
       case 'resumen': return 'Resumen';
       case 'historial': return 'Historial';
@@ -524,6 +568,11 @@ function App() {
           <li className={currentScreen === 'movimientos' ? 'active' : ''}>
             <button onClick={() => navigateTo('movimientos')}>
               <HomeIcon /> Movimientos
+            </button>
+          </li>
+          <li className={currentScreen === 'agregar-venta' ? 'active' : ''}>
+            <button onClick={() => navigateTo('agregar-venta')}>
+              <PlusCircleIcon /> Agregar Venta
             </button>
           </li>
           <li className={currentScreen === 'agregar-gasto' ? 'active' : ''}>
