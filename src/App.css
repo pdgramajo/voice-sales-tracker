@@ -55,27 +55,40 @@ body {
   font-family: 'DM Sans', -apple-system, sans-serif;
   background: var(--bg-primary);
   min-height: 100vh;
-  padding: 16px;
-  padding-top: 80px;
+  padding: 0;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   transition: background 0.4s ease, color 0.3s ease;
 }
 
 .container {
-  max-width: 420px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
   background: var(--bg-secondary);
-  border-radius: 24px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: none;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: none;
   transition: background 0.4s ease, border-color 0.3s ease;
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
+}
+
+@media (min-width: 500px) {
+  body {
+    padding: 16px;
+  }
+  
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 24px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border);
+    min-height: calc(100vh - 32px);
+  }
 }
 
 .header {
-  padding: 12px 16px;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -83,6 +96,12 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+@media (min-width: 500px) {
+  .header {
+    padding: 12px 16px;
+  }
 }
 
 .menu-btn {
@@ -377,7 +396,13 @@ body {
 /* Compact Quick Summary */
 .quick-summary.compact {
   padding: 8px;
-  margin: 0 8px 6px;
+  margin: 0;
+}
+
+@media (min-width: 500px) {
+  .quick-summary.compact {
+    margin: 0 8px 6px;
+  }
 }
 
 .quick-summary.compact .summary-row-compact {
@@ -444,11 +469,13 @@ body {
 
 /* Quick Mic Section */
 .quick-mic-section {
-  margin: 0 8px 6px;
+  margin: 0;
   padding: 8px;
   background: var(--bg-card);
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -696,7 +723,8 @@ body {
 
 /* Ventas Section */
 .ventas-section {
-  margin: 0 8px 8px;
+  margin: 0;
+  padding: 0 12px 12px;
 }
 
 .filtros {
@@ -759,10 +787,20 @@ body {
   padding: 8px 10px;
   margin-bottom: 6px;
   background: var(--bg-card);
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: slideIn 0.3s ease;
+}
+
+@media (min-width: 500px) {
+  .venta-item {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    margin-bottom: 6px;
+  }
 }
 
 @keyframes slideIn {
@@ -1245,41 +1283,4 @@ body {
 
 .theme-toggle-btn:hover {
   border-color: var(--accent-primary);
-}
-
-/* Responsive */
-@media (max-width: 400px) {
-  body {
-    padding: 12px;
-    padding-top: 76px;
-  }
-  
-  .container {
-    border-radius: 20px;
-    min-height: calc(100vh - 100px);
-  }
-  
-  .header {
-    padding: 16px 20px;
-  }
-  
-  .quick-summary,
-  .voice-section,
-  .ventas-section,
-  .resumen-section,
-  .gasto-form-section,
-  .historial-section,
-  .config-section {
-    margin-left: 12px;
-    margin-right: 12px;
-  }
-  
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .summary-totals {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
 }
