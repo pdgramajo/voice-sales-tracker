@@ -23,11 +23,11 @@ const MoonIcon = () => (
   </svg>
 );
 
-const DownloadIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-    <polyline points="7,10 12,15 17,10"/>
-    <line x1="12" y1="15" x2="12" y2="3"/>
+const MenuIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
   </svg>
 );
 
@@ -35,6 +35,14 @@ const CloseIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
+const DownloadIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7,10 12,15 17,10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
   </svg>
 );
 
@@ -62,6 +70,35 @@ const WalletIcon = () => (
   </svg>
 );
 
+const HistoryIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12,6 12,12 16,14"/>
+  </svg>
+);
+
+const SettingsIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+);
+
+const HomeIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9,22 9,12 15,12 15,22"/>
+  </svg>
+);
+
+const ReceiptIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2-3-2z"/>
+    <line x1="8" y1="10" x2="16" y2="10"/>
+    <line x1="8" y1="14" x2="16" y2="14"/>
+  </svg>
+);
+
 const formatCurrency = (amount) => {
   const safeAmount = isNaN(amount) ? 0 : amount;
   return new Intl.NumberFormat('es-MX', {
@@ -81,13 +118,13 @@ const formatDate = () => {
 function App() {
   const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
   const totalVentas = efectivoTotal + transferenciaTotal;
+  const [currentScreen, setCurrentScreen] = useState('movimientos');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [metodoPago, setMetodoPago] = useState('efectivo');
   const [gastoDescripcion, setGastoDescripcion] = useState('');
   const [gastoMonto, setGastoMonto] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showGastoModal, setShowGastoModal] = useState(false);
   const [filtro, setFiltro] = useState(() => {
     const saved = localStorage.getItem('filtro');
     return saved || 'todos';
@@ -152,10 +189,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (showGastoModal && gastoInputRef.current) {
-      setTimeout(() => gastoInputRef.current.focus(), 100);
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  }, [showGastoModal]);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
 
   const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -194,21 +236,16 @@ function App() {
       agregarGasto(monto, gastoDescripcion.trim());
       setGastoDescripcion('');
       setGastoMonto('');
-      setShowGastoModal(false);
     }
   };
 
-  const openGastoModal = () => {
-    setGastoDescripcion('');
-    setGastoMonto('');
-    setShowGastoModal(true);
-  };
-
-  const closeGastoModal = () => {
-    setShowGastoModal(false);
+  const navigateTo = (screen) => {
+    setCurrentScreen(screen);
+    setMenuOpen(false);
   };
 
   const enCaja = efectivoTotal - totalGastos;
+  const ventasEfectivo = totalVentas - transferenciaTotal;
 
   const allItems = [...ventas, ...gastos].sort((a, b) => b.timestamp - a.timestamp);
   
@@ -219,217 +256,126 @@ function App() {
     return true;
   });
 
-  return (
-    <>
-      <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
-        {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-      </button>
-      
-      <div className="container">
-        <header className="header">
-          <div className="header-content">
-            <h1>Registro de <span>Ventas</span></h1>
-            <p className="fecha">{formatDate()}</p>
-          </div>
-        </header>
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'movimientos':
+        return (
+          <>
+            <section className="quick-summary">
+              <div className="summary-grid">
+                <div className="summary-item efectivo">
+                  <span className="summary-label"><MoneyIcon /> Efectivo</span>
+                  <span className="summary-value">{formatCurrency(ventasEfectivo)}</span>
+                </div>
+                <div className="summary-item transferencia">
+                  <span className="summary-label"><TransferIcon /> Transferencia</span>
+                  <span className="summary-value">{formatCurrency(transferenciaTotal)}</span>
+                </div>
+              </div>
+              <div className="summary-totals">
+                <div className="summary-total-item">
+                  <span>Ventas Totales</span>
+                  <strong>{formatCurrency(totalVentas)}</strong>
+                </div>
+                <div className="summary-total-item">
+                  <span>Saldo</span>
+                  <strong className={enCaja >= 0 ? 'positive' : 'negative'}>{formatCurrency(enCaja)}</strong>
+                </div>
+              </div>
+            </section>
 
-        <section className="total-section">
-          <h2>Resumen del Día</h2>
-          
-          <div className="saldo-inicial-section">
-            <label className="saldo-inicial-label">
-              <WalletIcon /> Saldo Inicial en Caja
-            </label>
-            <input
-              type="number"
-              className="saldo-inicial-input"
-              value={saldoInicial || ''}
-              onChange={(e) => actualizarSaldoInicial(e.target.value)}
-              placeholder="0.00"
-              min="0"
-              step="0.01"
-            />
-          </div>
-          
-          <div className="totals-grid">
-            <div className="total-item">
-              <span className="total-label">Ventas Efectivo</span>
-              <span className="total-value success">{formatCurrency(totalVentas - transferenciaTotal)}</span>
-            </div>
-            <div className="total-item">
-              <span className="total-label">Transferencia</span>
-              <span className="total-value" style={{color: 'var(--success-transferencia)'}}>{formatCurrency(transferenciaTotal)}</span>
-            </div>
-          </div>
-          
-          <div className="totals-grid">
-            <div className="total-item">
-              <span className="total-label">Gastos</span>
-              <span className="total-value danger">-{formatCurrency(totalGastos)}</span>
-            </div>
-            <div className="total-item">
-              <span className="total-label">Total Ventas</span>
-              <span className="total-value success">{formatCurrency(totalVentas)}</span>
-            </div>
-          </div>
-          
-          <div className="en-caja-row">
-            <div className="en-caja-item">
-              <span className="en-caja-label">En Caja</span>
-              <span className={`en-caja-value ${enCaja >= 0 ? 'positive' : 'negative'}`}>
-                {formatCurrency(enCaja)}
-              </span>
-            </div>
-            <div className="transferencia-item">
-              <span className="transferencia-label-text">Transferencia</span>
-              <span className="transferencia-value">
-                {formatCurrency(transferenciaTotal)}
-              </span>
-            </div>
-          </div>
-        </section>
+            <section className="voice-section">
+              <div className="metodo-pago">
+                <button 
+                  type="button"
+                  className={`metodo-btn ${metodoPago === 'efectivo' ? 'active' : ''}`}
+                  onClick={() => setMetodoPago('efectivo')}
+                >
+                  <MoneyIcon /> Efectivo
+                </button>
+                <button 
+                  type="button"
+                  className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
+                  onClick={() => setMetodoPago('transferencia')}
+                >
+                  <TransferIcon /> Transferencia
+                </button>
+              </div>
+              
+              <div className="voice-controls">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Di un número o escríbelo..."
+                  className="voice-input"
+                />
+                <button 
+                  className={`mic-btn ${isListening ? 'listening' : ''}`}
+                  onClick={toggleListening}
+                  disabled={!recognitionRef.current}
+                >
+                  {isListening ? '⏹' : '🎤'}
+                </button>
+              </div>
+              <button className="save-btn" onClick={handleInputSubmit}>
+                Guardar
+              </button>
+            </section>
 
-        <section className="voice-section">
-          <h3>Dictar Venta</h3>
-          
-          <div className="metodo-pago">
-            <button 
-              type="button"
-              className={`metodo-btn ${metodoPago === 'efectivo' ? 'active' : ''}`}
-              onClick={() => setMetodoPago('efectivo')}
-            >
-              <MoneyIcon /> Efectivo
-            </button>
-            <button 
-              type="button"
-              className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
-              onClick={() => setMetodoPago('transferencia')}
-            >
-              <TransferIcon /> Transferencia
-            </button>
-          </div>
-          
-          <div className="voice-controls">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Di un número o escríbelo..."
-              className="voice-input"
-            />
-            <button 
-              className={`mic-btn ${isListening ? 'listening' : ''}`}
-              onClick={toggleListening}
-              disabled={!recognitionRef.current}
-            >
-              {isListening ? '⏹' : '🎤'}
-            </button>
-          </div>
-          <button className="save-btn" onClick={handleInputSubmit}>
-            Guardar
-          </button>
-          <button className="gasto-btn-secondary" onClick={openGastoModal}>
-            + Agregar Gasto
-          </button>
-        </section>
+            <section className="ventas-section">
+              <div className="filtros">
+                <button className={`filtro-btn ${filtro === 'todos' ? 'active' : ''}`} onClick={() => setFiltro('todos')}>Todos</button>
+                <button className={`filtro-btn ${filtro === 'efectivo' ? 'active' : ''}`} onClick={() => setFiltro('efectivo')}>Efectivo</button>
+                <button className={`filtro-btn ${filtro === 'transferencia' ? 'active' : ''}`} onClick={() => setFiltro('transferencia')}>Transferencia</button>
+                <button className={`filtro-btn ${filtro === 'gastos' ? 'active' : ''}`} onClick={() => setFiltro('gastos')}>Gastos</button>
+              </div>
 
-        <section className="ventas-section">
-          <div className="ventas-header">
-            <h3>Movimientos del Día</h3>
-            <button 
-              className="history-btn"
-              onClick={() => setShowHistory(!showHistory)}
-            >
-              {showHistory ? 'Ocultar' : 'Ver'} Historial
-            </button>
-          </div>
-
-          <div className="filtros">
-            <button className={`filtro-btn ${filtro === 'todos' ? 'active' : ''}`} onClick={() => setFiltro('todos')}>Todos</button>
-            <button className={`filtro-btn ${filtro === 'efectivo' ? 'active' : ''}`} onClick={() => setFiltro('efectivo')}>Efectivo</button>
-            <button className={`filtro-btn ${filtro === 'transferencia' ? 'active' : ''}`} onClick={() => setFiltro('transferencia')}>Transferencia</button>
-            <button className={`filtro-btn ${filtro === 'gastos' ? 'active' : ''}`} onClick={() => setFiltro('gastos')}>Gastos</button>
-          </div>
-
-          {showHistory && (
-            <div className="historial">
-              <h4>Historial de Días Anteriores</h4>
-              {obtenerHistorial().length === 0 ? (
-                <p>No hay registros anteriores</p>
+              {filteredItems.length === 0 ? (
+                <p className="no-ventas">No hay movimientos registrados hoy</p>
               ) : (
-                <ul>
-                  {obtenerHistorial().slice().reverse().map((item, index) => (
-                    <li key={index}>
-                      <div className="historial-info">
-                        <span className="historial-fecha">{item.fecha}</span>
-                        <span className="historial-detalles">
-                          Ventas: {formatCurrency(item.totalVentas)} | Gastos: {formatCurrency(item.totalGastos)}
+                <ul className="ventas-list">
+                  {filteredItems.map((item) => (
+                    <li key={item.id} className={`venta-item ${item.tipo}`}>
+                      <div className="venta-info">
+                        <span className={`venta-monto ${item.tipo} ${item.metodoPago || ''}`}>
+                          {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
+                          {item.tipo === 'venta' && (
+                            <span className={`metodo-badge ${item.metodoPago}`}>
+                              ({item.metodoPago === 'efectivo' ? 'E' : 'T'})
+                            </span>
+                          )}
+                        </span>
+                        <span className="venta-fecha">
+                          {item.tipo === 'venta' ? item.fechaCompleta : item.descripcion}
                         </span>
                       </div>
-                      <span className="historial-ganancia">
-                        {formatCurrency(item.gananciaNeta)}
-                      </span>
+                      <button 
+                        className="delete-btn"
+                        onClick={() => item.tipo === 'venta' ? eliminarVenta(item.id) : eliminarGasto(item.id)}
+                      >
+                        ×
+                      </button>
                     </li>
                   ))}
                 </ul>
               )}
-            </div>
-          )}
+            </section>
+          </>
+        );
 
-          {filteredItems.length === 0 ? (
-            <p className="no-ventas">No hay movimientos registrados hoy</p>
-          ) : (
-            <ul className="ventas-list">
-              {filteredItems.map((item) => (
-                <li key={item.id} className={`venta-item ${item.tipo}`}>
-                  <div className="venta-info">
-                    <span className={`venta-monto ${item.tipo} ${item.metodoPago || ''}`}>
-                      {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
-                      {item.tipo === 'venta' && (
-                        <span className={`metodo-badge ${item.metodoPago}`}>
-                          ({item.metodoPago === 'efectivo' ? 'E' : 'T'})
-                        </span>
-                      )}
-                    </span>
-                    <span className="venta-fecha">
-                      {item.tipo === 'venta' ? item.fechaCompleta : item.descripcion}
-                    </span>
-                  </div>
-                  <button 
-                    className="delete-btn"
-                    onClick={() => item.tipo === 'venta' ? eliminarVenta(item.id) : eliminarGasto(item.id)}
-                  >
-                    ×
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <button className="close-day-btn" onClick={cerrarDia}>
-          <DownloadIcon />
-          Cerrar Día
-        </button>
-      </div>
-
-      {showGastoModal && (
-        <div className="modal-overlay" onClick={closeGastoModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Agregar Gasto</h3>
-              <button className="modal-close" onClick={closeGastoModal}>
-                <CloseIcon />
-              </button>
-            </div>
-            <form onSubmit={handleGastoSubmit} className="modal-form">
+      case 'agregar-gasto':
+        return (
+          <section className="gasto-form-section">
+            <h2>Agregar Gasto</h2>
+            <form onSubmit={handleGastoSubmit} className="gasto-form">
               <input
                 ref={gastoInputRef}
                 type="text"
                 value={gastoDescripcion}
                 onChange={(e) => setGastoDescripcion(e.target.value)}
                 placeholder="Descripción del gasto..."
-                className="modal-input"
+                className="gasto-input"
                 required
               />
               <input
@@ -439,21 +385,186 @@ function App() {
                 placeholder="$0.00"
                 step="0.01"
                 min="0"
-                className="modal-input"
+                className="gasto-input"
                 required
               />
-              <div className="modal-actions">
-                <button type="button" className="modal-cancel" onClick={closeGastoModal}>
-                  Cancelar
-                </button>
-                <button type="submit" className="modal-submit">
-                  Agregar
-                </button>
-              </div>
+              <button type="submit" className="save-btn">Agregar Gasto</button>
             </form>
-          </div>
+          </section>
+        );
+
+      case 'resumen':
+        return (
+          <>
+            <section className="resumen-section">
+              <div className="resumen-header">
+                <h2>Resumen del Día</h2>
+                <p className="fecha">{formatDate()}</p>
+              </div>
+              
+              <div className="saldo-inicial-section">
+                <label className="saldo-inicial-label">
+                  <WalletIcon /> Saldo Inicial en Caja
+                </label>
+                <input
+                  type="number"
+                  className="saldo-inicial-input"
+                  value={saldoInicial || ''}
+                  onChange={(e) => actualizarSaldoInicial(e.target.value)}
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              
+              <div className="resumen-detailed">
+                <div className="resumen-row">
+                  <span>Ventas en Efectivo</span>
+                  <span className="green">{formatCurrency(ventasEfectivo)}</span>
+                </div>
+                <div className="resumen-row">
+                  <span>Ventas por Transferencia</span>
+                  <span className="blue">{formatCurrency(transferenciaTotal)}</span>
+                </div>
+                <div className="resumen-row total">
+                  <span>Total Ventas</span>
+                  <span className="green">{formatCurrency(totalVentas)}</span>
+                </div>
+                <div className="resumen-row">
+                  <span>Gastos</span>
+                  <span className="red">-{formatCurrency(totalGastos)}</span>
+                </div>
+                <div className="resumen-divider"></div>
+                <div className="resumen-row highlight">
+                  <span>Saldo Inicial</span>
+                  <span>{formatCurrency(saldoInicial)}</span>
+                </div>
+                <div className="resumen-row final">
+                  <span>En Caja</span>
+                  <span className={enCaja >= 0 ? 'green' : 'red'}>{formatCurrency(enCaja)}</span>
+                </div>
+              </div>
+              
+              <button className="close-day-btn" onClick={cerrarDia}>
+                <DownloadIcon />
+                Cerrar Día
+              </button>
+            </section>
+          </>
+        );
+
+      case 'historial':
+        const historial = obtenerHistorial();
+        return (
+          <section className="historial-section">
+            <h2>Historial</h2>
+            {historial.length === 0 ? (
+              <p className="no-ventas">No hay registros anteriores</p>
+            ) : (
+              <ul className="historial-list">
+                {historial.slice().reverse().map((item, index) => (
+                  <li key={index} className="historial-item">
+                    <div className="historial-info">
+                      <span className="historial-fecha">{item.fecha}</span>
+                      <span className="historial-detalles">
+                        Ventas: {formatCurrency(item.totalVentas)} | Gastos: {formatCurrency(item.totalGastos)}
+                      </span>
+                    </div>
+                    <span className={`historial-ganancia ${item.gananciaNeta >= 0 ? 'positive' : 'negative'}`}>
+                      {formatCurrency(item.gananciaNeta)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+
+      case 'configuracion':
+        return (
+          <section className="config-section">
+            <h2>Configuración</h2>
+            <div className="config-item">
+              <span>Tema</span>
+              <button className="theme-toggle-btn" onClick={toggleTheme}>
+                {theme === 'light' ? <><SunIcon /> Claro</> : <><MoonIcon /> Oscuro</>}
+              </button>
+            </div>
+          </section>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const getScreenTitle = () => {
+    switch (currentScreen) {
+      case 'movimientos': return 'Movimientos';
+      case 'agregar-gasto': return 'Agregar Gasto';
+      case 'resumen': return 'Resumen';
+      case 'historial': return 'Historial';
+      case 'configuracion': return 'Configuración';
+      default: return '';
+    }
+  };
+
+  return (
+    <>
+      {menuOpen && <div className="menu-overlay" onClick={() => setMenuOpen(false)} />}
+      
+      <nav className={`drawer ${menuOpen ? 'open' : ''}`}>
+        <div className="drawer-header">
+          <h3>Menú</h3>
+          <button className="drawer-close" onClick={() => setMenuOpen(false)}>
+            <CloseIcon />
+          </button>
         </div>
-      )}
+        <ul className="drawer-menu">
+          <li className={currentScreen === 'movimientos' ? 'active' : ''}>
+            <button onClick={() => navigateTo('movimientos')}>
+              <HomeIcon /> Movimientos
+            </button>
+          </li>
+          <li className={currentScreen === 'agregar-gasto' ? 'active' : ''}>
+            <button onClick={() => navigateTo('agregar-gasto')}>
+              <ReceiptIcon /> Agregar Gasto
+            </button>
+          </li>
+          <li className={currentScreen === 'resumen' ? 'active' : ''}>
+            <button onClick={() => navigateTo('resumen')}>
+              <WalletIcon /> Resumen
+            </button>
+          </li>
+          <li className={currentScreen === 'historial' ? 'active' : ''}>
+            <button onClick={() => navigateTo('historial')}>
+              <HistoryIcon /> Historial
+            </button>
+          </li>
+          <li className={currentScreen === 'configuracion' ? 'active' : ''}>
+            <button onClick={() => navigateTo('configuracion')}>
+              <SettingsIcon /> Configuración
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div className="container">
+        <header className="header">
+          <button className="menu-btn" onClick={() => setMenuOpen(true)}>
+            <MenuIcon />
+          </button>
+          <div className="header-content">
+            <h1>Registro de <span>Ventas</span></h1>
+            <p className="screen-title">{getScreenTitle()}</p>
+          </div>
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
+            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+          </button>
+        </header>
+
+        {renderScreen()}
+      </div>
     </>
   );
 }
