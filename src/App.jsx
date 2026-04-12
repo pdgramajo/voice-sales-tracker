@@ -80,7 +80,10 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showGastoModal, setShowGastoModal] = useState(false);
-  const [filtro, setFiltro] = useState('todos');
+  const [filtro, setFiltro] = useState(() => {
+    const saved = localStorage.getItem('filtro');
+    return saved || 'todos';
+  });
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved || 'light';
@@ -94,6 +97,10 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem('filtro', filtro);
+  }, [filtro]);
 
   useEffect(() => {
     agregarVentaRef.current = agregarVenta;
