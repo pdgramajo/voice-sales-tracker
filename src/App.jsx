@@ -80,6 +80,7 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showGastoModal, setShowGastoModal] = useState(false);
+  const [filtro, setFiltro] = useState('todos');
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved || 'light';
@@ -195,6 +196,13 @@ function App() {
   const enCaja = efectivoTotal - totalGastos;
 
   const allItems = [...ventas, ...gastos].sort((a, b) => b.timestamp - a.timestamp);
+  
+  const filteredItems = allItems.filter(item => {
+    if (filtro === 'efectivo') return item.tipo === 'venta' && item.metodoPago === 'efectivo';
+    if (filtro === 'transferencia') return item.tipo === 'venta' && item.metodoPago === 'transferencia';
+    if (filtro === 'gastos') return item.tipo === 'gasto';
+    return true;
+  });
 
   return (
     <>
@@ -303,6 +311,13 @@ function App() {
             </button>
           </div>
 
+          <div className="filtros">
+            <button className={`filtro-btn ${filtro === 'todos' ? 'active' : ''}`} onClick={() => setFiltro('todos')}>Todos</button>
+            <button className={`filtro-btn ${filtro === 'efectivo' ? 'active' : ''}`} onClick={() => setFiltro('efectivo')}>Efectivo</button>
+            <button className={`filtro-btn ${filtro === 'transferencia' ? 'active' : ''}`} onClick={() => setFiltro('transferencia')}>Transferencia</button>
+            <button className={`filtro-btn ${filtro === 'gastos' ? 'active' : ''}`} onClick={() => setFiltro('gastos')}>Gastos</button>
+          </div>
+
           {showHistory && (
             <div className="historial">
               <h4>Historial de Días Anteriores</h4>
@@ -328,11 +343,11 @@ function App() {
             </div>
           )}
 
-          {allItems.length === 0 ? (
+          {filteredItems.length === 0 ? (
             <p className="no-ventas">No hay movimientos registrados hoy</p>
           ) : (
             <ul className="ventas-list">
-              {allItems.map((item) => (
+              {filteredItems.map((item) => (
                 <li key={item.id} className={`venta-item ${item.tipo}`}>
                   <div className="venta-info">
                     <span className={`venta-monto ${item.tipo} ${item.metodoPago || ''}`}>
