@@ -829,6 +829,10 @@ body {
   color: var(--danger);
 }
 
+.venta-monto.transferencia {
+  color: var(--success-transferencia);
+}
+
 .venta-fecha {
   font-size: 12px;
   color: var(--text-muted);

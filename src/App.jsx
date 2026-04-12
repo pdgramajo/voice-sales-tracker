@@ -335,7 +335,7 @@ function App() {
               {allItems.map((item) => (
                 <li key={item.id} className={`venta-item ${item.tipo}`}>
                   <div className="venta-info">
-                    <span className={`venta-monto ${item.tipo}`}>
+                    <span className={`venta-monto ${item.tipo} ${item.metodoPago || ''}`}>
                       {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
                       {item.tipo === 'venta' && (
                         <span className={`metodo-badge ${item.metodoPago}`}>
