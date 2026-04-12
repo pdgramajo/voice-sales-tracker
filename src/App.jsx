@@ -605,7 +605,6 @@ function App() {
           </button>
           <div className="header-content">
             <h1>Registro de <span>Ventas</span></h1>
-            <p className="screen-title">{getScreenTitle()}</p>
           </div>
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
             {theme === 'light' ? <MoonIcon /> : <SunIcon />}

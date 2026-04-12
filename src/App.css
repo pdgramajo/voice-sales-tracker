@@ -130,14 +130,6 @@ body {
   background-clip: text;
 }
 
-.screen-title {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
 .header .theme-toggle {
   position: relative;
   top: 0;
@@ -368,20 +360,20 @@ body {
 
 /* Compact Quick Summary */
 .quick-summary.compact {
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: 10px;
+  margin: 0 12px 8px;
 }
 
 .quick-summary.compact .summary-row-compact {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .quick-summary.compact .summary-row-compact:last-child {
   margin-bottom: 0;
-  padding-top: 8px;
+  padding-top: 6px;
   border-top: 1px solid var(--border);
 }
 
@@ -389,7 +381,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 8px 10px;
+  padding: 6px 8px;
   background: var(--bg-elevated);
   border-radius: 10px;
 }
@@ -436,15 +428,15 @@ body {
 
 /* Quick Mic Section */
 .quick-mic-section {
-  margin: 0 16px 12px;
-  padding: 12px;
+  margin: 0 12px 8px;
+  padding: 10px;
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .metodo-pago-mini {
@@ -688,20 +680,20 @@ body {
 
 /* Ventas Section */
 .ventas-section {
-  margin: 0 16px 16px;
+  margin: 0 12px 12px;
 }
 
 .filtros {
   display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 6px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
 .filtro-btn {
   flex: 1;
-  min-width: 70px;
-  padding: 10px 12px;
+  min-width: 60px;
+  padding: 8px 10px;
   background: var(--bg-card);
   color: var(--text-muted);
   border: 1px solid var(--border);
@@ -726,7 +718,7 @@ body {
 
 .ventas-list {
   list-style: none;
-  max-height: 300px;
+  max-height: 420px;
   overflow-y: auto;
   padding-right: 2px;
 }
@@ -748,10 +740,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  margin-bottom: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: slideIn 0.3s ease;
@@ -786,13 +778,13 @@ body {
 .venta-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
 }
 
 .venta-monto {
   font-family: 'Fraunces', serif;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--success);
   display: flex;
@@ -809,16 +801,16 @@ body {
 }
 
 .venta-fecha {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   font-weight: 500;
 }
 
 .metodo-badge {
   display: inline-flex;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 9px;
   font-weight: 700;
   font-family: 'DM Sans', sans-serif;
   vertical-align: middle;
@@ -835,9 +827,9 @@ body {
 }
 
 .delete-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   border: none;
   background: var(--bg-elevated);
   color: var(--text-muted);
