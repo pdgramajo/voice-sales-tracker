@@ -54,6 +54,14 @@ const TransferIcon = () => (
   </svg>
 );
 
+const WalletIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
+    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
+    <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"/>
+  </svg>
+);
+
 const formatCurrency = (amount) => {
   const safeAmount = isNaN(amount) ? 0 : amount;
   return new Intl.NumberFormat('es-MX', {
@@ -71,7 +79,7 @@ const formatDate = () => {
 };
 
 function App() {
-  const { ventas, gastos, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, obtenerHistorial, cerrarDia } = useVentas();
+  const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
   const totalVentas = efectivoTotal + transferenciaTotal;
   const [inputValue, setInputValue] = useState('');
   const [metodoPago, setMetodoPago] = useState('efectivo');
@@ -228,22 +236,40 @@ function App() {
         <section className="total-section">
           <h2>Resumen del Día</h2>
           
+          <div className="saldo-inicial-section">
+            <label className="saldo-inicial-label">
+              <WalletIcon /> Saldo Inicial en Caja
+            </label>
+            <input
+              type="number"
+              className="saldo-inicial-input"
+              value={saldoInicial || ''}
+              onChange={(e) => actualizarSaldoInicial(e.target.value)}
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+            />
+          </div>
+          
           <div className="totals-grid">
             <div className="total-item">
-              <span className="total-label">Ventas</span>
-              <span className="total-value success">{formatCurrency(totalVentas)}</span>
-              <div className="total-sub">
-                <span className="efectivo-label">
-                  <MoneyIcon /> E: {formatCurrency(efectivoTotal)}
-                </span>
-                <span className="transferencia-label">
-                  <TransferIcon /> T: {formatCurrency(transferenciaTotal)}
-                </span>
-              </div>
+              <span className="total-label">Ventas Efectivo</span>
+              <span className="total-value success">{formatCurrency(totalVentas - transferenciaTotal)}</span>
             </div>
+            <div className="total-item">
+              <span className="total-label">Transferencia</span>
+              <span className="total-value" style={{color: 'var(--success-transferencia)'}}>{formatCurrency(transferenciaTotal)}</span>
+            </div>
+          </div>
+          
+          <div className="totals-grid">
             <div className="total-item">
               <span className="total-label">Gastos</span>
               <span className="total-value danger">-{formatCurrency(totalGastos)}</span>
+            </div>
+            <div className="total-item">
+              <span className="total-label">Total Ventas</span>
+              <span className="total-value success">{formatCurrency(totalVentas)}</span>
             </div>
           </div>
           

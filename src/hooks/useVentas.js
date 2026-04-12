@@ -15,10 +15,11 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-export const generarPDF = (ventas, gastos) => {
-  const efectivoTotal = ventas.filter(v => v.metodoPago === 'efectivo').reduce((sum, v) => sum + v.monto, 0);
+export const generarPDF = (ventas, gastos, saldoInicial = 0) => {
+  const ventasEfectivo = ventas.filter(v => v.metodoPago === 'efectivo').reduce((sum, v) => sum + v.monto, 0);
   const transferenciaTotal = ventas.filter(v => v.metodoPago === 'transferencia').reduce((sum, v) => sum + v.monto, 0);
-  const totalVentas = efectivoTotal + transferenciaTotal;
+  const efectivoTotal = saldoInicial + ventasEfectivo;
+  const totalVentas = ventasEfectivo + transferenciaTotal;
   const totalGastos = gastos.reduce((sum, g) => sum + g.monto, 0);
   const enCaja = efectivoTotal - totalGastos;
 
@@ -46,6 +47,16 @@ export const generarPDF = (ventas, gastos) => {
   doc.text(fechaCompleta, pageWidth / 2, 35, { align: 'center' });
   
   let yPos = 60;
+   
+  if (saldoInicial > 0) {
+    doc.setFillColor(255, 251, 235);
+    doc.rect(15, yPos - 5, pageWidth - 30, 14, 'F');
+    doc.setTextColor(180, 83, 9);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Saldo Inicial: ${formatCurrency(saldoInicial)}`, 20, yPos + 4);
+    yPos += 20;
+  }
   
   doc.setTextColor(50, 50, 55);
   doc.setFontSize(11);
@@ -178,8 +189,8 @@ export const generarPDF = (ventas, gastos) => {
   doc.save(fileName);
 };
 
-const calcularTotales = (ventas, gastos) => {
-  const efectivoTotal = ventas
+const calcularTotales = (ventas, gastos, saldoInicial = 0) => {
+  const ventasEfectivo = ventas
     .filter(v => v.metodoPago === 'efectivo')
     .reduce((sum, v) => sum + v.monto, 0);
   
@@ -187,6 +198,7 @@ const calcularTotales = (ventas, gastos) => {
     .filter(v => v.metodoPago === 'transferencia')
     .reduce((sum, v) => sum + v.monto, 0);
   
+  const efectivoTotal = saldoInicial + ventasEfectivo;
   const totalGastos = gastos.reduce((sum, g) => sum + g.monto, 0);
   
   return { efectivoTotal, transferenciaTotal, totalGastos };
@@ -195,12 +207,13 @@ const calcularTotales = (ventas, gastos) => {
 const useVentas = () => {
   const [ventas, setVentas] = useState([]);
   const [gastos, setGastos] = useState([]);
+  const [saldoInicial, setSaldoInicial] = useState(0);
   const [totales, setTotales] = useState({ efectivoTotal: 0, transferenciaTotal: 0, totalGastos: 0 });
 
-  const stateRef = useRef({ ventas: [], gastos: [] });
+  const stateRef = useRef({ ventas: [], gastos: [], saldoInicial: 0 });
 
-  const recalcularTotales = useCallback((v, g) => {
-    const nuevosTotales = calcularTotales(v, g);
+  const recalcularTotales = useCallback((v, g, s) => {
+    const nuevosTotales = calcularTotales(v, g, s);
     setTotales(nuevosTotales);
     return nuevosTotales;
   }, []);
@@ -212,11 +225,13 @@ const useVentas = () => {
         const parsed = JSON.parse(savedData);
         const v = parsed.ventas || [];
         const g = parsed.gastos || [];
+        const s = parsed.saldoInicial || 0;
         
-        stateRef.current = { ventas: v, gastos: g };
+        stateRef.current = { ventas: v, gastos: g, saldoInicial: s };
         setVentas([...v]);
         setGastos([...g]);
-        recalcularTotales(v, g);
+        setSaldoInicial(s);
+        recalcularTotales(v, g, s);
       } catch (e) {
         localStorage.removeItem(getTodayKey());
       }
@@ -226,18 +241,20 @@ const useVentas = () => {
   const saveState = useCallback(() => {
     localStorage.setItem(getTodayKey(), JSON.stringify({
       ventas: stateRef.current.ventas,
-      gastos: stateRef.current.gastos
+      gastos: stateRef.current.gastos,
+      saldoInicial: stateRef.current.saldoInicial
     }));
   }, []);
 
   const guardarHistorico = useCallback(() => {
-    if (stateRef.current.ventas.length === 0 && stateRef.current.gastos.length === 0) return;
+    if (stateRef.current.ventas.length === 0 && stateRef.current.gastos.length === 0 && stateRef.current.saldoInicial === 0) return;
 
     const { efectivoTotal, transferenciaTotal, totalGastos } = calcularTotales(
       stateRef.current.ventas,
-      stateRef.current.gastos
+      stateRef.current.gastos,
+      stateRef.current.saldoInicial
     );
-    const totalVentas = efectivoTotal + transferenciaTotal;
+    const totalVentas = efectivoTotal - stateRef.current.saldoInicial;
     const enCaja = efectivoTotal - totalGastos;
 
     const now = new Date();
@@ -249,6 +266,7 @@ const useVentas = () => {
     const historial = JSON.parse(localStorage.getItem(getHistoricalKey()) || '[]');
     historial.push({
       fecha: `${dayName} ${day} ${year}`,
+      saldoInicial: stateRef.current.saldoInicial,
       totalVentas,
       totalGastos,
       efectivoTotal,
@@ -286,7 +304,7 @@ const useVentas = () => {
 
     stateRef.current.ventas = [venta, ...stateRef.current.ventas];
     setVentas([...stateRef.current.ventas]);
-    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
     saveState();
   }, [saveState, recalcularTotales]);
 
@@ -301,21 +319,21 @@ const useVentas = () => {
 
     stateRef.current.gastos = [gasto, ...stateRef.current.gastos];
     setGastos([...stateRef.current.gastos]);
-    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
     saveState();
   }, [saveState, recalcularTotales]);
 
   const eliminarVenta = useCallback((id) => {
     stateRef.current.ventas = stateRef.current.ventas.filter(v => v.id !== id);
     setVentas([...stateRef.current.ventas]);
-    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
     saveState();
   }, [saveState, recalcularTotales]);
 
   const eliminarGasto = useCallback((id) => {
     stateRef.current.gastos = stateRef.current.gastos.filter(g => g.id !== id);
     setGastos([...stateRef.current.gastos]);
-    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
     saveState();
   }, [saveState, recalcularTotales]);
 
@@ -323,14 +341,23 @@ const useVentas = () => {
     return JSON.parse(localStorage.getItem(getHistoricalKey()) || '[]');
   }, []);
 
+  const actualizarSaldoInicial = useCallback((monto) => {
+    const nuevoSaldo = Number(monto) || 0;
+    stateRef.current.saldoInicial = nuevoSaldo;
+    setSaldoInicial(nuevoSaldo);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, nuevoSaldo);
+    saveState();
+  }, [saveState, recalcularTotales]);
+
   const cerrarDia = useCallback(() => {
-    if (stateRef.current.ventas.length > 0 || stateRef.current.gastos.length > 0) {
-      generarPDF([...stateRef.current.ventas], [...stateRef.current.gastos]);
+    if (stateRef.current.ventas.length > 0 || stateRef.current.gastos.length > 0 || stateRef.current.saldoInicial > 0) {
+      generarPDF([...stateRef.current.ventas], [...stateRef.current.gastos], stateRef.current.saldoInicial);
     }
     guardarHistorico();
-    stateRef.current = { ventas: [], gastos: [] };
+    stateRef.current = { ventas: [], gastos: [], saldoInicial: 0 };
     setVentas([]);
     setGastos([]);
+    setSaldoInicial(0);
     setTotales({ efectivoTotal: 0, transferenciaTotal: 0, totalGastos: 0 });
     localStorage.removeItem(getTodayKey());
   }, [guardarHistorico]);
@@ -338,6 +365,7 @@ const useVentas = () => {
   return {
     ventas,
     gastos,
+    saldoInicial,
     efectivoTotal: totales.efectivoTotal,
     transferenciaTotal: totales.transferenciaTotal,
     totalGastos: totales.totalGastos,
@@ -345,6 +373,7 @@ const useVentas = () => {
     agregarGasto,
     eliminarVenta,
     eliminarGasto,
+    actualizarSaldoInicial,
     obtenerHistorial,
     cerrarDia
   };

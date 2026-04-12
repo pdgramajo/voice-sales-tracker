@@ -171,6 +171,56 @@ body {
   margin-bottom: 14px;
 }
 
+.saldo-inicial-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--bg-elevated), rgba(251, 191, 36, 0.1));
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.saldo-inicial-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.saldo-inicial-input {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--accent-primary);
+  text-align: right;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.saldo-inicial-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+.saldo-inicial-input::placeholder {
+  color: var(--text-muted);
+}
+
+.saldo-inicial-input::-webkit-inner-spin-button,
+.saldo-inicial-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 .totals-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
