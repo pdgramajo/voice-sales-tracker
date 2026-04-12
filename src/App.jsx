@@ -194,11 +194,7 @@ function App() {
 
   const enCaja = efectivoTotal - totalGastos;
 
-  const allItems = [...ventas, ...gastos].sort((a, b) => {
-    if (a.tipo === 'gasto' && b.tipo === 'venta') return -1;
-    if (a.tipo === 'venta' && b.tipo === 'gasto') return 1;
-    return b.timestamp - a.timestamp;
-  });
+  const allItems = [...ventas, ...gastos].sort((a, b) => b.timestamp - a.timestamp);
 
   return (
     <>
