@@ -298,30 +298,34 @@ function App() {
             </section>
 
             <section className="quick-mic-section">
-              <div className="metodo-pago-mini">
+              <p className="mic-instruction">
+                Selecciona el tipo y luego presiona 🎤 y dicta el monto
+              </p>
+              <div className="mic-row">
+                <div className="metodo-pago-mini">
+                  <button 
+                    type="button"
+                    className={`metodo-btn-mini ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
+                    onClick={() => setMetodoPago('efectivo')}
+                  >
+                    <MoneyIcon />
+                  </button>
+                  <button 
+                    type="button"
+                    className={`metodo-btn-mini ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
+                    onClick={() => setMetodoPago('transferencia')}
+                  >
+                    <TransferIcon />
+                  </button>
+                </div>
                 <button 
-                  type="button"
-                  className={`metodo-btn-mini ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
-                  onClick={() => setMetodoPago('efectivo')}
+                  className={`mic-btn-large ${isListening ? 'listening' : ''}`}
+                  onClick={toggleListening}
+                  disabled={!recognitionRef.current}
                 >
-                  <MoneyIcon />
-                </button>
-                <button 
-                  type="button"
-                  className={`metodo-btn-mini ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
-                  onClick={() => setMetodoPago('transferencia')}
-                >
-                  <TransferIcon />
+                  {isListening ? '⏹' : '🎤'}
                 </button>
               </div>
-              <button 
-                className={`mic-btn-large ${isListening ? 'listening' : ''}`}
-                onClick={toggleListening}
-                disabled={!recognitionRef.current}
-              >
-                {isListening ? '⏹' : '🎤'}
-              </button>
-              <p className="mic-hint">Presiona 🎤 y dicta el monto</p>
             </section>
 
             <section className="ventas-section">
@@ -343,7 +347,7 @@ function App() {
                           {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
                           {item.tipo === 'venta' && (
                             <span className={`metodo-badge ${item.metodoPago}`}>
-                              {item.metodoPago === 'efectivo' ? '💵 Efec' : '📱 Trans'}
+                              {item.metodoPago === 'efectivo' ? 'Efec' : 'Trans'}
                             </span>
                           )}
                         </span>
