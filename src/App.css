@@ -561,21 +561,9 @@ body {
   }
 }
 
-@media (min-width: 501px) {
-  .metodo-btn-wide {
-    display: none;
-  }
-}
-
 .metodo-pago-mini {
-  display: none;
+  display: flex;
   gap: 6px;
-}
-
-@media (min-width: 501px) {
-  .metodo-pago-mini {
-    display: flex;
-  }
 }
 
 .metodo-btn-mini {
