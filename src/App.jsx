@@ -696,8 +696,8 @@ function App() {
               <div className="guia-group">
                 <div className="guia-command-title">Retiros</div>
                 <div className="guia-item">
-                  <div className="guia-example">"retiro trescientos kanu"</div>
-                  <div className="guia-result">→ Retiro $300 (lo que el jefe se lleva)</div>
+                  <div className="guia-example">"retiro trescientos"</div>
+                  <div className="guia-result">→ Retiro $300</div>
                 </div>
               </div>
 
