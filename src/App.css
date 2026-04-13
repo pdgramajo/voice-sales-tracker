@@ -509,30 +509,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  width: 100%;
-}
-
-@media (max-width: 500px) {
-  .mic-row {
-    gap: 8px;
-  }
-  
-  .metodo-pago-mini {
-    flex: 1;
-    gap: 8px;
-  }
-  
-  .metodo-btn-mini {
-    flex: 1;
-    width: auto;
-    height: 50px;
-  }
-  
-  .mic-btn-large {
-    width: 80px;
-    height: 50px;
-    flex-shrink: 0;
-  }
 }
 
 .metodo-pago-mini {
