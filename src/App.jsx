@@ -275,7 +275,7 @@ function App() {
                   <span className="summary-card-value">{formatCurrency(transferenciaTotal)}</span>
                 </div>
                 <div className="summary-card total">
-                  <span className="summary-card-label">Total Ventas</span>
+                  <span className="summary-card-label">Total</span>
                   <span className="summary-card-value">{formatCurrency(totalVentas)}</span>
                 </div>
                 <div className={`summary-card saldo ${enCaja >= 0 ? '' : 'negative'}`}>
@@ -288,8 +288,8 @@ function App() {
             <section className="ventas-section">
               <div className="filtros">
                 <button className={`filtro-btn ${filtro === 'todos' ? 'active' : ''}`} onClick={() => setFiltro('todos')}>Todos</button>
-                <button className={`filtro-btn ${filtro === 'efectivo' ? 'active' : ''}`} onClick={() => setFiltro('efectivo')}>Efectivo</button>
-                <button className={`filtro-btn ${filtro === 'transferencia' ? 'active' : ''}`} onClick={() => setFiltro('transferencia')}>Transferencia</button>
+                <button className={`filtro-btn ${filtro === 'efectivo' ? 'active' : ''}`} onClick={() => setFiltro('efectivo')}>Efec</button>
+                <button className={`filtro-btn ${filtro === 'transferencia' ? 'active' : ''}`} onClick={() => setFiltro('transferencia')}>Trans</button>
                 <button className={`filtro-btn ${filtro === 'gastos' ? 'active' : ''}`} onClick={() => setFiltro('gastos')}>Gastos</button>
               </div>
 
