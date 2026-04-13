@@ -516,42 +516,16 @@ body {
   .mic-row {
     gap: 8px;
   }
-}
-
-.metodo-btn-wide {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 16px;
-  height: 50px;
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-elevated);
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-@media (max-width: 500px) {
-  .metodo-btn-wide {
-    display: flex;
+  
+  .metodo-pago-mini {
     flex: 1;
+    gap: 8px;
   }
   
-  .metodo-btn-wide.active.efectivo {
-    border-color: var(--success-efectivo);
-    background: var(--success-efectivo);
-    color: white;
-  }
-  
-  .metodo-btn-wide.active.transferencia {
-    border-color: var(--success-transferencia);
-    background: var(--success-transferencia);
-    color: white;
+  .metodo-btn-mini {
+    flex: 1;
+    width: auto;
+    height: 50px;
   }
   
   .mic-btn-large {
@@ -567,6 +541,8 @@ body {
 }
 
 .metodo-btn-mini {
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -576,14 +552,7 @@ body {
   color: var(--text-muted);
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-@media (min-width: 501px) {
-  .metodo-btn-mini {
-    width: 40px;
-    height: 40px;
-  }
+  transition: all 0.3s ease;
 }
 
 .metodo-btn-mini:hover {

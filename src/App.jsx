@@ -302,20 +302,22 @@ function App() {
                 Selecciona el tipo y luego presiona 🎤 y dicta el monto
               </p>
               <div className="mic-row">
-                <button 
-                  type="button"
-                  className={`metodo-btn-wide ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
-                  onClick={() => setMetodoPago('efectivo')}
-                >
-                  <MoneyIcon /> Efectivo
-                </button>
-                <button 
-                  type="button"
-                  className={`metodo-btn-wide ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
-                  onClick={() => setMetodoPago('transferencia')}
-                >
-                  <TransferIcon /> Transferencia
-                </button>
+                <div className="metodo-pago-mini">
+                  <button 
+                    type="button"
+                    className={`metodo-btn-mini ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
+                    onClick={() => setMetodoPago('efectivo')}
+                  >
+                    <MoneyIcon />
+                  </button>
+                  <button 
+                    type="button"
+                    className={`metodo-btn-mini ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
+                    onClick={() => setMetodoPago('transferencia')}
+                  >
+                    <TransferIcon />
+                  </button>
+                </div>
                 <button 
                   className={`mic-btn-large ${isListening ? 'listening' : ''}`}
                   onClick={toggleListening}
