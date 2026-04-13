@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/voice-sales-tracker/dev-sw.js?dev-sw', { scope: '/voice-sales-tracker/', type: 'classic' })

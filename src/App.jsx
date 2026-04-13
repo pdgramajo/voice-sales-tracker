@@ -70,6 +70,34 @@ const PlusIcon = () => (
   </svg>
 );
 
+const EditIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+);
+
+const SettingsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+);
+
+const ArrowLeftIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="19" y1="12" x2="5" y2="12"/>
+    <polyline points="12,19 5,12 12,5"/>
+  </svg>
+);
+
+const BookIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+  </svg>
+);
+
 const MicIcon = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -98,6 +126,25 @@ const formatDate = () => {
 const parseVoiceCommand = (text) => {
   const palabras = text.toLowerCase();
   
+  if (palabras.includes('inicio de caja')) {
+    const monto = textToNumber(text);
+    if (!monto || monto <= 0) {
+      return { success: false, error: 'Monto no válido' };
+    }
+    return { success: true, tipo: 'inicio-caja', monto };
+  }
+  
+  if (palabras.includes('retiro')) {
+    const monto = textToNumber(text);
+    if (!monto || monto <= 0) {
+      return { success: false, error: 'Monto no válido' };
+    }
+    const parts = palabras.replace('retiro', '').replace(/\d+/g, '').trim();
+    const words = parts.split(/\s+/).filter(w => w.length > 0 && !['mil', 'cientos', 'ciento', 'quinientos', 'quinientas'].includes(w));
+    const comentario = words.join(' ') || 'Retiro';
+    return { success: true, tipo: 'retiro', monto, descripcion: comentario };
+  }
+  
   let tipo = null;
   let metodo = null;
   
@@ -120,7 +167,14 @@ const parseVoiceCommand = (text) => {
   }
   
   if (tipo === 'gasto') {
-    return { success: true, tipo: 'gasto', monto };
+    let descripcion = '';
+    const words = palabras.split(' ');
+    const gastoIndex = words.indexOf('gasto');
+    const enIndex = words.indexOf('en', gastoIndex);
+    if (enIndex !== -1) {
+      descripcion = words.slice(enIndex + 1).join(' ');
+    }
+    return { success: true, tipo: 'gasto', monto, descripcion };
   }
   
   if (tipo === 'venta') {
@@ -138,21 +192,25 @@ const parseVoiceCommand = (text) => {
 };
 
 function App() {
-  const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
+  const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, agregarRetiro, eliminarVenta, eliminarGasto, actualizarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
   const totalVentas = efectivoTotal + transferenciaTotal;
   const [currentScreen, setCurrentScreen] = useState('movimientos');
   const [inputValue, setInputValue] = useState('');
   const [metodoPago, setMetodoPago] = useState('efectivo');
   const [gastoDescripcion, setGastoDescripcion] = useState('');
   const [gastoMonto, setGastoMonto] = useState('');
+  const [ventaMonto, setVentaMonto] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [filtro, setFiltro] = useState(() => {
     const saved = localStorage.getItem('filtro');
     return saved || 'todos';
   });
   const [toast, setToast] = useState(null);
+  const [editandoGasto, setEditandoGasto] = useState(null);
   const agregarVentaRef = useRef(agregarVenta);
   const agregarGastoRef = useRef(agregarGasto);
+  const agregarRetiroRef = useRef(agregarRetiro);
+  const actualizarSaldoInicialRef = useRef(actualizarSaldoInicial);
   const setToastRef = useRef(setToast);
   const recognitionRef = useRef(null);
   
@@ -167,6 +225,14 @@ function App() {
   useEffect(() => {
     agregarGastoRef.current = agregarGasto;
   }, [agregarGasto]);
+
+  useEffect(() => {
+    agregarRetiroRef.current = agregarRetiro;
+  }, [agregarRetiro]);
+
+  useEffect(() => {
+    actualizarSaldoInicialRef.current = actualizarSaldoInicial;
+  }, [actualizarSaldoInicial]);
 
   useEffect(() => {
     setToastRef.current = setToast;
@@ -186,9 +252,18 @@ function App() {
         const result = parseVoiceCommand(transcript);
         
         if (result.success) {
-          if (result.tipo === 'gasto') {
-            agregarGastoRef.current(result.monto, 'Dictado por voz');
-            setToastRef.current(`Gasto $${result.monto.toLocaleString()}`);
+          if (result.tipo === 'inicio-caja') {
+            actualizarSaldoInicialRef.current(result.monto);
+            setToastRef.current(`Inicio caja $${result.monto.toLocaleString()}`);
+            setTimeout(() => setToastRef.current(null), 2000);
+          } else if (result.tipo === 'retiro') {
+            agregarRetiroRef.current(result.monto, result.descripcion);
+            setToastRef.current(`Retiro $${result.monto.toLocaleString()} ${result.descripcion}`);
+            setTimeout(() => setToastRef.current(null), 2000);
+          } else if (result.tipo === 'gasto') {
+            agregarGastoRef.current(result.monto, result.descripcion || 'Sin descripción');
+            const descText = result.descripcion ? ` - ${result.descripcion}` : '';
+            setToastRef.current(`Gasto $${result.monto.toLocaleString()}${descText}`);
             setTimeout(() => setToastRef.current(null), 2000);
           } else {
             agregarVentaRef.current(result.monto, result.metodo);
@@ -236,11 +311,44 @@ function App() {
     e.preventDefault();
     const monto = parseFloat(gastoMonto);
     if (!isNaN(monto) && monto > 0 && gastoDescripcion.trim()) {
-      agregarGasto(monto, gastoDescripcion.trim());
+      if (editandoGasto) {
+        actualizarGasto(editandoGasto.id, {
+          monto: monto,
+          descripcion: gastoDescripcion.trim()
+        });
+        setEditandoGasto(null);
+        setToast('Gasto actualizado');
+      } else {
+        agregarGasto(monto, gastoDescripcion.trim());
+        setToast(`Gasto $${monto.toLocaleString()}`);
+      }
       setGastoDescripcion('');
       setGastoMonto('');
-      setToast(`Gasto $${monto.toLocaleString()}`);
       setTimeout(() => setToast(null), 2000);
+    }
+  };
+
+  const handleEditGasto = (item) => {
+    setEditandoGasto(item);
+    setGastoDescripcion(item.descripcion);
+    setGastoMonto(item.monto.toString());
+  };
+
+  const handleCancelarEdicion = () => {
+    setEditandoGasto(null);
+    setGastoDescripcion('');
+    setGastoMonto('');
+  };
+
+  const handleVentaSubmit = (e) => {
+    e.preventDefault();
+    const monto = parseFloat(ventaMonto);
+    if (!isNaN(monto) && monto > 0) {
+      agregarVenta(monto, metodoPago);
+      setVentaMonto('');
+      setToast(`Venta ${metodoPago === 'efectivo' ? 'Efec' : 'Trans'} $${monto.toLocaleString()}`);
+      setTimeout(() => setToast(null), 2000);
+      setCurrentScreen('movimientos');
     }
   };
 
@@ -255,7 +363,7 @@ function App() {
   const filteredItems = allItems.filter(item => {
     if (filtro === 'efectivo') return item.tipo === 'venta' && item.metodoPago === 'efectivo';
     if (filtro === 'transferencia') return item.tipo === 'venta' && item.metodoPago === 'transferencia';
-    if (filtro === 'gastos') return item.tipo === 'gasto';
+    if (filtro === 'gastos') return item.tipo === 'gasto' || item.tipo === 'retiro';
     return true;
   });
 
@@ -354,22 +462,28 @@ function App() {
                 <TransferIcon /> Transferencia
               </button>
             </div>
-            <button 
-              className={`fab-mic ${isListening ? 'listening' : ''}`}
-              onClick={toggleListening}
-              disabled={!recognitionRef.current}
-              style={{position: 'relative', margin: '0 auto 20px', display: 'flex'}}
-            >
-              {isListening ? '×' : '🎤'}
-            </button>
+            <form onSubmit={handleVentaSubmit} className="gasto-form">
+              <input
+                type="number"
+                value={ventaMonto}
+                onChange={(e) => setVentaMonto(e.target.value)}
+                placeholder="$0.00"
+                step="0.01"
+                min="0"
+                className="gasto-input"
+                required
+                autoFocus
+              />
+              <button type="submit" className="save-btn" style={{background: 'var(--success-efectivo)'}}>Agregar Venta</button>
+            </form>
           </section>
         );
 
       case 'agregar-gasto':
         return (
           <section className="gasto-form-section">
-            <h2>Agregar Gasto</h2>
-            <form onSubmit={handleGastoSubmit} className="gasto-form">
+            <h2>{editandoGasto ? 'Editar Gasto' : 'Agregar Gasto'}</h2>
+            <form onSubmit={handleGastoSubmit} className={`gasto-form ${editandoGasto ? 'edit-mode' : ''}`}>
               <input
                 type="text"
                 value={gastoDescripcion}
@@ -388,8 +502,60 @@ function App() {
                 className="gasto-input"
                 required
               />
-              <button type="submit" className="save-btn">Agregar Gasto</button>
+              <div className="gasto-form-buttons">
+                <button type="submit" className="save-btn">
+                  {editandoGasto ? 'Guardar' : 'Agregar Gasto'}
+                </button>
+                {editandoGasto && (
+                  <button 
+                    type="button" 
+                    className="cancel-btn"
+                    onClick={handleCancelarEdicion}
+                  >
+                    Cancelar
+                  </button>
+                )}
+              </div>
             </form>
+
+            {gastos.length > 0 && (
+              <div className="gastos-list-section">
+                <h3>Gastos del día</h3>
+                <ul className="gastos-simple-list">
+                  {gastos.map((item) => (
+                    <li key={item.id} className={`gasto-simple-item ${item.tipo}`}>
+                      <div className="gasto-simple-info">
+                        <span className="gasto-simple-desc">{item.descripcion}</span>
+                        <span className="gasto-simple-monto">-{formatCurrency(item.monto)}</span>
+                      </div>
+                      <div className="gasto-simple-actions">
+                        <button 
+                          className="gasto-action-btn edit"
+                          onClick={() => handleEditGasto(item)}
+                          title="Editar"
+                        >
+                          <EditIcon />
+                        </button>
+                        <button 
+                          className="gasto-action-btn delete"
+                          onClick={() => {
+                            eliminarGasto(item.id);
+                            if (editandoGasto?.id === item.id) {
+                              handleCancelarEdicion();
+                            }
+                            setToast(`${item.tipo === 'retiro' ? 'Retiro' : 'Gasto'} eliminado`);
+                            setTimeout(() => setToast(null), 2000);
+                          }}
+                          title="Eliminar"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         );
 
@@ -473,6 +639,96 @@ function App() {
           </section>
         );
 
+      case 'config':
+        return (
+          <section className="config-section">
+            <h2>Configuración</h2>
+            <div className="config-menu">
+              <button 
+                className="config-item"
+                onClick={() => navigateTo('guia')}
+              >
+                <BookIcon />
+                <div className="config-item-text">
+                  <span className="config-item-title">Guía de Comandos</span>
+                  <span className="config-item-desc">Aprende a usar la app</span>
+                </div>
+              </button>
+            </div>
+          </section>
+        );
+
+      case 'guia':
+        return (
+          <section className="guia-section">
+            <button className="guia-back-btn" onClick={() => navigateTo('config')}>
+              <ArrowLeftIcon />
+              Volver
+            </button>
+            <h2>Guía de Comandos</h2>
+            
+            <div className="guia-content">
+              <div className="guia-section-title">
+                <MicIcon />
+                Comandos de Voz
+              </div>
+              
+              <div className="guia-group">
+                <div className="guia-command-title">Ventas</div>
+                <div className="guia-item">
+                  <div className="guia-example">"venta mil efectivo"</div>
+                  <div className="guia-result">→ Registra $1,000 en efectivo</div>
+                </div>
+                <div className="guia-item">
+                  <div className="guia-example">"venta dos mil transferencia"</div>
+                  <div className="guia-result">→ Registra $2,000 por transferencia</div>
+                </div>
+              </div>
+
+              <div className="guia-group">
+                <div className="guia-command-title">Gastos</div>
+                <div className="guia-item">
+                  <div className="guia-example">"gasto quinientos en papel"</div>
+                  <div className="guia-result">→ Gasto $500 con descripción "papel"</div>
+                </div>
+              </div>
+
+              <div className="guia-group">
+                <div className="guia-command-title">Retiros</div>
+                <div className="guia-item">
+                  <div className="guia-example">"retiro trescientos kanu"</div>
+                  <div className="guia-result">→ Retiro $300 (lo que el jefe se lleva)</div>
+                </div>
+              </div>
+
+              <div className="guia-group">
+                <div className="guia-command-title">Inicio de Caja</div>
+                <div className="guia-item">
+                  <div className="guia-example">"inicio de caja cinco mil"</div>
+                  <div className="guia-result">→ Empieza el día con $5,000 en caja</div>
+                </div>
+              </div>
+
+              <div className="guia-divider"></div>
+
+              <div className="guia-section-title">
+                <span>📱</span>
+                Funcionalidades
+              </div>
+
+              <div className="guia-features">
+                <div className="guia-feature">• Ver tu resumen de ventas en Home</div>
+                <div className="guia-feature">• Agregar ventas por voz o manualmente</div>
+                <div className="guia-feature">• Registrar gastos y retiros</div>
+                <div className="guia-feature">• Editar o eliminar gastos desde la sección Gasto</div>
+                <div className="guia-feature">• Ver cuánto dinero hay en caja</div>
+                <div className="guia-feature">• Cerrar el día y descargar tu reporte en PDF</div>
+                <div className="guia-feature">• Revisar tu historial de días anteriores</div>
+              </div>
+            </div>
+          </section>
+        );
+
       default:
         return null;
     }
@@ -524,6 +780,13 @@ function App() {
         >
           <HistoryIcon />
           Historial
+        </button>
+        <button 
+          className={`nav-item ${currentScreen === 'config' || currentScreen === 'guia' ? 'active' : ''}`}
+          onClick={() => navigateTo('config')}
+        >
+          <SettingsIcon />
+          Más
         </button>
       </nav>
 

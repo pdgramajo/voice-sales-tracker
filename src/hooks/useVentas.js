@@ -323,6 +323,21 @@ const useVentas = () => {
     saveState();
   }, [saveState, recalcularTotales]);
 
+  const agregarRetiro = useCallback((monto, comentario) => {
+    const retiro = {
+      id: Date.now(),
+      tipo: 'retiro',
+      monto: Number(monto),
+      descripcion: comentario,
+      timestamp: Date.now()
+    };
+
+    stateRef.current.gastos = [retiro, ...stateRef.current.gastos];
+    setGastos([...stateRef.current.gastos]);
+    recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
+    saveState();
+  }, [saveState, recalcularTotales]);
+
   const eliminarVenta = useCallback((id) => {
     stateRef.current.ventas = stateRef.current.ventas.filter(v => v.id !== id);
     setVentas([...stateRef.current.ventas]);
@@ -335,6 +350,21 @@ const useVentas = () => {
     setGastos([...stateRef.current.gastos]);
     recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
     saveState();
+  }, [saveState, recalcularTotales]);
+
+  const actualizarGasto = useCallback((id, updates) => {
+    const index = stateRef.current.gastos.findIndex(g => g.id === id);
+    if (index !== -1) {
+      if (updates.monto !== undefined) {
+        stateRef.current.gastos[index].monto = Number(updates.monto);
+      }
+      if (updates.descripcion !== undefined) {
+        stateRef.current.gastos[index].descripcion = updates.descripcion;
+      }
+      setGastos([...stateRef.current.gastos]);
+      recalcularTotales(stateRef.current.ventas, stateRef.current.gastos, stateRef.current.saldoInicial);
+      saveState();
+    }
   }, [saveState, recalcularTotales]);
 
   const obtenerHistorial = useCallback(() => {
@@ -371,8 +401,10 @@ const useVentas = () => {
     totalGastos: totales.totalGastos,
     agregarVenta,
     agregarGasto,
+    agregarRetiro,
     eliminarVenta,
     eliminarGasto,
+    actualizarGasto,
     actualizarSaldoInicial,
     obtenerHistorial,
     cerrarDia
