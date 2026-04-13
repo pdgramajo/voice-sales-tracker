@@ -7,7 +7,7 @@ A modern voice-controlled daily sales, expenses, and withdrawals tracking applic
 - **Voice Commands**: Dictate transactions in Spanish with full descriptions
   - "venta mil efectivo" → Cash sale $1,000
   - "gasto quinientos en servilletas" → Expense $500 with note
-  - "retiro trescientos" → Withdrawal $300
+  - "retiro trescientos Juan Pérez" → Withdrawal $300
   - "inicio de caja cinco mil" → Set starting cash $5,000
 - **Payment Methods**: Track sales by cash (Efectivo) or bank transfer (Transferencia)
 - **Expense & Withdrawal Tracking**: Add expenses with descriptions and withdrawals with comments
@@ -58,7 +58,7 @@ The app will be available at `http://localhost:5173`
 | `venta mil efectivo` | Cash sale for $1,000 |
 | `venta dos mil transferencia` | Transfer sale for $2,000 |
 | `gasto quinientos en papel` | Expense $500 with description |
-| `retiro trescientos` | Withdrawal $300 |
+| `retiro trescientos Juan Pérez` | Withdrawal $300 |
 | `inicio de caja cinco mil` | Set starting cash to $5,000 |
 
 ### Manual Entry
