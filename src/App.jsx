@@ -4,7 +4,7 @@ import textToNumber from './utils/textToNumber';
 import './App.css';
 
 const SunIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="5"/>
     <line x1="12" y1="1" x2="12" y2="3"/>
     <line x1="12" y1="21" x2="12" y2="23"/>
@@ -14,27 +14,6 @@ const SunIcon = () => (
     <line x1="21" y1="12" x2="23" y2="12"/>
     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-  </svg>
-);
-
-const MoonIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-  </svg>
-);
-
-const MenuIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="3" y1="12" x2="21" y2="12"/>
-    <line x1="3" y1="6" x2="21" y2="6"/>
-    <line x1="3" y1="18" x2="21" y2="18"/>
-  </svg>
-);
-
-const CloseIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="6" x2="6" y2="18"/>
-    <line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
 );
 
@@ -63,7 +42,7 @@ const TransferIcon = () => (
 );
 
 const WalletIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
     <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
     <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"/>
@@ -71,39 +50,32 @@ const WalletIcon = () => (
 );
 
 const HistoryIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12,6 12,12 16,14"/>
   </svg>
 );
 
-const SettingsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-  </svg>
-);
-
 const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
     <polyline points="9,22 9,12 15,12 15,22"/>
   </svg>
 );
 
-const ReceiptIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2-3-2z"/>
-    <line x1="8" y1="10" x2="16" y2="10"/>
-    <line x1="8" y1="14" x2="16" y2="14"/>
+const PlusIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
   </svg>
 );
 
-const PlusCircleIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="12" y1="8" x2="12" y2="16"/>
-    <line x1="8" y1="12" x2="16" y2="12"/>
+const MicIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+    <line x1="12" y1="19" x2="12" y2="23"/>
+    <line x1="8" y1="23" x2="16" y2="23"/>
   </svg>
 );
 
@@ -169,7 +141,6 @@ function App() {
   const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
   const totalVentas = efectivoTotal + transferenciaTotal;
   const [currentScreen, setCurrentScreen] = useState('movimientos');
-  const [menuOpen, setMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [metodoPago, setMetodoPago] = useState('efectivo');
   const [gastoDescripcion, setGastoDescripcion] = useState('');
@@ -179,23 +150,12 @@ function App() {
     const saved = localStorage.getItem('filtro');
     return saved || 'todos';
   });
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved || 'light';
-  });
   const [toast, setToast] = useState(null);
   const agregarVentaRef = useRef(agregarVenta);
-  const metodoPagoRef = useRef(metodoPago);
   const agregarGastoRef = useRef(agregarGasto);
   const setToastRef = useRef(setToast);
   const recognitionRef = useRef(null);
-  const gastoInputRef = useRef(null);
   
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
   useEffect(() => {
     localStorage.setItem('filtro', filtro);
   }, [filtro]);
@@ -203,10 +163,6 @@ function App() {
   useEffect(() => {
     agregarVentaRef.current = agregarVenta;
   }, [agregarVenta]);
-
-  useEffect(() => {
-    metodoPagoRef.current = metodoPago;
-  }, [metodoPago]);
 
   useEffect(() => {
     agregarGastoRef.current = agregarGasto;
@@ -232,17 +188,16 @@ function App() {
         if (result.success) {
           if (result.tipo === 'gasto') {
             agregarGastoRef.current(result.monto, 'Dictado por voz');
-            setToastRef.current(`✅ Gasto $${result.monto.toLocaleString()}`);
+            setToastRef.current(`Gasto $${result.monto.toLocaleString()}`);
             setTimeout(() => setToastRef.current(null), 2000);
           } else {
             agregarVentaRef.current(result.monto, result.metodo);
             const metodoLabel = result.metodo === 'efectivo' ? 'Efec' : 'Trans';
-            setToastRef.current(`✅ Venta ${metodoLabel} $${result.monto.toLocaleString()}`);
+            setToastRef.current(`Venta ${metodoLabel} $${result.monto.toLocaleString()}`);
             setTimeout(() => setToastRef.current(null), 2000);
           }
-          setInputValue('');
         } else {
-          setToastRef.current(`❌ ${result.error}`);
+          setToastRef.current(result.error);
           setTimeout(() => setToastRef.current(null), 2000);
         }
         setIsListening(false);
@@ -258,21 +213,6 @@ function App() {
       
       recognitionRef.current = rec;
     }
-  }, []);
-
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [menuOpen]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
   }, []);
 
   const toggleListening = useCallback(() => {
@@ -292,20 +232,6 @@ function App() {
     }
   }, [isListening]);
 
-  const handleInputSubmit = () => {
-    const numero = parseFloat(inputValue);
-    if (!isNaN(numero) && numero > 0) {
-      agregarVenta(numero, metodoPago);
-      setInputValue('');
-    } else {
-      const numeroLetras = textToNumber(inputValue);
-      if (numeroLetras > 0) {
-        agregarVenta(numeroLetras, metodoPago);
-        setInputValue('');
-      }
-    }
-  };
-
   const handleGastoSubmit = (e) => {
     e.preventDefault();
     const monto = parseFloat(gastoMonto);
@@ -313,16 +239,16 @@ function App() {
       agregarGasto(monto, gastoDescripcion.trim());
       setGastoDescripcion('');
       setGastoMonto('');
+      setToast(`Gasto $${monto.toLocaleString()}`);
+      setTimeout(() => setToast(null), 2000);
     }
   };
 
   const navigateTo = (screen) => {
     setCurrentScreen(screen);
-    setMenuOpen(false);
   };
 
   const enCaja = efectivoTotal - totalGastos;
-  const ventasEfectivo = totalVentas - transferenciaTotal;
 
   const allItems = [...ventas, ...gastos].sort((a, b) => b.timestamp - a.timestamp);
   
@@ -338,54 +264,25 @@ function App() {
       case 'movimientos':
         return (
           <>
-            <section className="quick-summary compact">
-              <div className="summary-row-compact">
-                <div className="summary-col">
-                  <span className="label-efectivo"><MoneyIcon /> Efectivo</span>
-                  <span className="value">{formatCurrency(ventasEfectivo)}</span>
+            <section className="summary-section">
+              <div className="summary-grid">
+                <div className="summary-card efectivo">
+                  <span className="summary-card-label">Efectivo</span>
+                  <span className="summary-card-value">{formatCurrency(totalVentas - transferenciaTotal)}</span>
                 </div>
-                <div className="summary-col">
-                  <span className="label-transferencia"><TransferIcon /> Transferencia</span>
-                  <span className="value blue">{formatCurrency(transferenciaTotal)}</span>
+                <div className="summary-card transferencia">
+                  <span className="summary-card-label">Transferencia</span>
+                  <span className="summary-card-value">{formatCurrency(transferenciaTotal)}</span>
                 </div>
-              </div>
-              <div className="summary-row-compact">
-                <div className="summary-col">
-                  <span className="label">Ventas Totales</span>
-                  <span className="value">{formatCurrency(totalVentas)}</span>
+                <div className="summary-card total">
+                  <span className="summary-card-label">Total Ventas</span>
+                  <span className="summary-card-value">{formatCurrency(totalVentas)}</span>
                 </div>
-                <div className="summary-col">
-                  <span className="label">Saldo</span>
-                  <span className={`value ${enCaja >= 0 ? 'positive' : 'negative'}`}>{formatCurrency(enCaja)}</span>
+                <div className={`summary-card saldo ${enCaja >= 0 ? '' : 'negative'}`}>
+                  <span className="summary-card-label">Saldo</span>
+                  <span className="summary-card-value">{formatCurrency(enCaja)}</span>
                 </div>
               </div>
-            </section>
-
-            <section className="quick-mic-section">
-              <div className="metodo-pago-mini">
-                <button 
-                  type="button"
-                  className={`metodo-btn-mini ${metodoPago === 'efectivo' ? 'active efectivo' : ''}`}
-                  onClick={() => setMetodoPago('efectivo')}
-                >
-                  <MoneyIcon />
-                </button>
-                <button 
-                  type="button"
-                  className={`metodo-btn-mini ${metodoPago === 'transferencia' ? 'active transferencia' : ''}`}
-                  onClick={() => setMetodoPago('transferencia')}
-                >
-                  <TransferIcon />
-                </button>
-              </div>
-              <button 
-                className={`mic-btn-large ${isListening ? 'listening' : ''}`}
-                onClick={toggleListening}
-                disabled={!recognitionRef.current}
-              >
-                {isListening ? '⏹' : '🎤'}
-              </button>
-              <p className="mic-hint">Presiona 🎤 y dicta el monto</p>
             </section>
 
             <section className="ventas-section">
@@ -397,7 +294,7 @@ function App() {
               </div>
 
               {filteredItems.length === 0 ? (
-                <p className="no-ventas">No hay movimientos registrados hoy</p>
+                <p className="no-ventas">No hay movimientos hoy</p>
               ) : (
                 <ul className="ventas-list">
                   {filteredItems.map((item) => (
@@ -407,7 +304,7 @@ function App() {
                           {item.tipo === 'venta' ? '+' : '-'}{formatCurrency(item.monto)}
                           {item.tipo === 'venta' && (
                             <span className={`metodo-badge ${item.metodoPago}`}>
-                              {item.metodoPago === 'efectivo' ? '💵 Efec' : '📱 Trans'}
+                              {item.metodoPago === 'efectivo' ? 'Efec' : 'Trans'}
                             </span>
                           )}
                         </span>
@@ -426,12 +323,20 @@ function App() {
                 </ul>
               )}
             </section>
+
+            <button 
+              className={`fab-mic ${isListening ? 'listening' : ''}`}
+              onClick={toggleListening}
+              disabled={!recognitionRef.current}
+            >
+              {isListening ? '×' : '🎤'}
+            </button>
           </>
         );
 
       case 'agregar-venta':
         return (
-          <section className="venta-form-section">
+          <section className="gasto-form-section">
             <h2>Agregar Venta</h2>
             <div className="metodo-pago">
               <button 
@@ -443,31 +348,19 @@ function App() {
               </button>
               <button 
                 type="button"
-                className={`metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
+                className={`metodo-btn transferencia ${metodoPago === 'transferencia' ? 'active' : ''}`}
                 onClick={() => setMetodoPago('transferencia')}
               >
                 <TransferIcon /> Transferencia
               </button>
             </div>
-            
-            <div className="voice-controls">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Di un número o escríbelo..."
-                className="voice-input"
-              />
-              <button 
-                className={`mic-btn ${isListening ? 'listening' : ''}`}
-                onClick={toggleListening}
-                disabled={!recognitionRef.current}
-              >
-                {isListening ? '⏹' : '🎤'}
-              </button>
-            </div>
-            <button className="save-btn" onClick={handleInputSubmit}>
-              Guardar
+            <button 
+              className={`fab-mic ${isListening ? 'listening' : ''}`}
+              onClick={toggleListening}
+              disabled={!recognitionRef.current}
+              style={{position: 'relative', margin: '0 auto 20px', display: 'flex'}}
+            >
+              {isListening ? '×' : '🎤'}
             </button>
           </section>
         );
@@ -478,7 +371,6 @@ function App() {
             <h2>Agregar Gasto</h2>
             <form onSubmit={handleGastoSubmit} className="gasto-form">
               <input
-                ref={gastoInputRef}
                 type="text"
                 value={gastoDescripcion}
                 onChange={(e) => setGastoDescripcion(e.target.value)}
@@ -503,62 +395,55 @@ function App() {
 
       case 'resumen':
         return (
-          <>
-            <section className="resumen-section">
-              <div className="resumen-header">
-                <h2>Resumen del Día</h2>
-                <p className="fecha">{formatDate()}</p>
+          <section className="resumen-section">
+            <div className="resumen-header">
+              <h2>Resumen del Día</h2>
+              <p className="fecha">{formatDate()}</p>
+            </div>
+            
+            <div className="saldo-inicial-section">
+              <label className="saldo-inicial-label">
+                <WalletIcon /> Saldo Inicial
+              </label>
+              <input
+                type="number"
+                className="saldo-inicial-input"
+                value={saldoInicial || ''}
+                onChange={(e) => actualizarSaldoInicial(e.target.value)}
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            
+            <div className="resumen-detailed">
+              <div className="resumen-row">
+                <span>Efectivo</span>
+                <span className="green">{formatCurrency(totalVentas - transferenciaTotal)}</span>
               </div>
-              
-              <div className="saldo-inicial-section">
-                <label className="saldo-inicial-label">
-                  <WalletIcon /> Saldo Inicial en Caja
-                </label>
-                <input
-                  type="number"
-                  className="saldo-inicial-input"
-                  value={saldoInicial || ''}
-                  onChange={(e) => actualizarSaldoInicial(e.target.value)}
-                  placeholder="0.00"
-                  min="0"
-                  step="0.01"
-                />
+              <div className="resumen-row">
+                <span>Transferencia</span>
+                <span className="blue">{formatCurrency(transferenciaTotal)}</span>
               </div>
-              
-              <div className="resumen-detailed">
-                <div className="resumen-row">
-                  <span>Ventas en Efectivo</span>
-                  <span className="green">{formatCurrency(ventasEfectivo)}</span>
-                </div>
-                <div className="resumen-row">
-                  <span>Ventas por Transferencia</span>
-                  <span className="blue">{formatCurrency(transferenciaTotal)}</span>
-                </div>
-                <div className="resumen-row total">
-                  <span>Total Ventas</span>
-                  <span className="green">{formatCurrency(totalVentas)}</span>
-                </div>
-                <div className="resumen-row">
-                  <span>Gastos</span>
-                  <span className="red">-{formatCurrency(totalGastos)}</span>
-                </div>
-                <div className="resumen-divider"></div>
-                <div className="resumen-row highlight">
-                  <span>Saldo Inicial</span>
-                  <span>{formatCurrency(saldoInicial)}</span>
-                </div>
-                <div className="resumen-row final">
-                  <span>En Caja</span>
-                  <span className={enCaja >= 0 ? 'green' : 'red'}>{formatCurrency(enCaja)}</span>
-                </div>
+              <div className="resumen-row total">
+                <span>Total Ventas</span>
+                <span className="green">{formatCurrency(totalVentas)}</span>
               </div>
-              
-              <button className="close-day-btn" onClick={cerrarDia}>
-                <DownloadIcon />
-                Cerrar Día
-              </button>
-            </section>
-          </>
+              <div className="resumen-row">
+                <span>Gastos</span>
+                <span className="red">-{formatCurrency(totalGastos)}</span>
+              </div>
+              <div className="resumen-row final">
+                <span>En Caja</span>
+                <span>{formatCurrency(enCaja)}</span>
+              </div>
+            </div>
+            
+            <button className="close-day-btn" onClick={cerrarDia}>
+              <DownloadIcon />
+              Cerrar Día
+            </button>
+          </section>
         );
 
       case 'historial':
@@ -569,7 +454,7 @@ function App() {
             {historial.length === 0 ? (
               <p className="no-ventas">No hay registros anteriores</p>
             ) : (
-              <ul className="historial-list">
+              <ul className="ventas-list">
                 {historial.slice().reverse().map((item, index) => (
                   <li key={index} className="historial-item">
                     <div className="historial-info">
@@ -588,99 +473,62 @@ function App() {
           </section>
         );
 
-      case 'configuracion':
-        return (
-          <section className="config-section">
-            <h2>Configuración</h2>
-            <div className="config-item">
-              <span>Tema</span>
-              <button className="theme-toggle-btn" onClick={toggleTheme}>
-                {theme === 'light' ? <><SunIcon /> Claro</> : <><MoonIcon /> Oscuro</>}
-              </button>
-            </div>
-          </section>
-        );
-
       default:
         return null;
     }
   };
 
-  const getScreenTitle = () => {
-    switch (currentScreen) {
-      case 'movimientos': return 'Movimientos';
-      case 'agregar-venta': return 'Agregar Venta';
-      case 'agregar-gasto': return 'Agregar Gasto';
-      case 'resumen': return 'Resumen';
-      case 'historial': return 'Historial';
-      case 'configuracion': return 'Configuración';
-      default: return '';
-    }
-  };
-
   return (
     <>
-      {menuOpen && <div className="menu-overlay" onClick={() => setMenuOpen(false)} />}
-      
-      <nav className={`drawer ${menuOpen ? 'open' : ''}`}>
-        <div className="drawer-header">
-          <h3>Menú</h3>
-          <button className="drawer-close" onClick={() => setMenuOpen(false)}>
-            <CloseIcon />
-          </button>
-        </div>
-        <ul className="drawer-menu">
-          <li className={currentScreen === 'movimientos' ? 'active' : ''}>
-            <button onClick={() => navigateTo('movimientos')}>
-              <HomeIcon /> Movimientos
-            </button>
-          </li>
-          <li className={currentScreen === 'agregar-venta' ? 'active' : ''}>
-            <button onClick={() => navigateTo('agregar-venta')}>
-              <PlusCircleIcon /> Agregar Venta
-            </button>
-          </li>
-          <li className={currentScreen === 'agregar-gasto' ? 'active' : ''}>
-            <button onClick={() => navigateTo('agregar-gasto')}>
-              <ReceiptIcon /> Agregar Gasto
-            </button>
-          </li>
-          <li className={currentScreen === 'resumen' ? 'active' : ''}>
-            <button onClick={() => navigateTo('resumen')}>
-              <WalletIcon /> Resumen
-            </button>
-          </li>
-          <li className={currentScreen === 'historial' ? 'active' : ''}>
-            <button onClick={() => navigateTo('historial')}>
-              <HistoryIcon /> Historial
-            </button>
-          </li>
-          <li className={currentScreen === 'configuracion' ? 'active' : ''}>
-            <button onClick={() => navigateTo('configuracion')}>
-              <SettingsIcon /> Configuración
-            </button>
-          </li>
-        </ul>
-      </nav>
-
       <div className="container">
-        <header className="header">
-          <button className="menu-btn" onClick={() => setMenuOpen(true)}>
-            <MenuIcon />
-          </button>
-          <div className="header-content">
-            <h1>Registro de <span>Ventas</span></h1>
-          </div>
-          <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
-            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-          </button>
-        </header>
-
         {renderScreen()}
       </div>
 
+      <nav className="bottom-nav">
+        <button 
+          className={`nav-item ${currentScreen === 'movimientos' ? 'active' : ''}`}
+          onClick={() => navigateTo('movimientos')}
+        >
+          <HomeIcon />
+          Home
+        </button>
+        <button 
+          className={`nav-item ${currentScreen === 'resumen' ? 'active' : ''}`}
+          onClick={() => navigateTo('resumen')}
+        >
+          <WalletIcon />
+          Resumen
+        </button>
+        <button 
+          className="nav-item add-btn"
+          onClick={() => {
+            if (metodoPago === 'efectivo') {
+              setCurrentScreen('agregar-venta');
+            } else {
+              setCurrentScreen('agregar-venta');
+            }
+          }}
+        >
+          <PlusIcon />
+        </button>
+        <button 
+          className={`nav-item ${currentScreen === 'agregar-gasto' ? 'active' : ''}`}
+          onClick={() => navigateTo('agregar-gasto')}
+        >
+          <MoneyIcon />
+          Gasto
+        </button>
+        <button 
+          className={`nav-item ${currentScreen === 'historial' ? 'active' : ''}`}
+          onClick={() => navigateTo('historial')}
+        >
+          <HistoryIcon />
+          Historial
+        </button>
+      </nav>
+
       {toast && (
-        <div className={`toast ${toast.startsWith('✅') ? 'success' : 'error'}`}>
+        <div className={`toast ${toast.startsWith('❌') ? 'error' : 'success'}`}>
           {toast}
         </div>
       )}
