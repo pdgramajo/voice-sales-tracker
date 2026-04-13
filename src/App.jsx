@@ -123,6 +123,48 @@ const formatDate = () => {
   return `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]} ${now.getFullYear()}`;
 };
 
+const parseVoiceCommand = (text) => {
+  const palabras = text.toLowerCase();
+  
+  let tipo = null;
+  let metodo = null;
+  
+  if (palabras.includes('venta')) {
+    tipo = 'venta';
+  } else if (palabras.includes('gasto')) {
+    tipo = 'gasto';
+  }
+  
+  if (palabras.includes('efectivo')) {
+    metodo = 'efectivo';
+  } else if (palabras.includes('transferencia') || palabras.includes('transferir')) {
+    metodo = 'transferencia';
+  }
+  
+  const monto = textToNumber(text);
+  
+  if (!monto || monto <= 0) {
+    return { success: false, error: 'Monto no válido' };
+  }
+  
+  if (tipo === 'gasto') {
+    return { success: true, tipo: 'gasto', monto };
+  }
+  
+  if (tipo === 'venta') {
+    if (!metodo) {
+      return { success: false, error: 'Indica Efec o Trans' };
+    }
+    return { success: true, tipo: 'venta', metodo, monto };
+  }
+  
+  if (metodo && !tipo) {
+    return { success: false, error: 'Indica Venta o Gasto' };
+  }
+  
+  return { success: false, error: 'Indica Venta o Gasto' };
+};
+
 function App() {
   const { ventas, gastos, saldoInicial, totalGastos, efectivoTotal, transferenciaTotal, agregarVenta, agregarGasto, eliminarVenta, eliminarGasto, actualizarSaldoInicial, obtenerHistorial, cerrarDia } = useVentas();
   const totalVentas = efectivoTotal + transferenciaTotal;
@@ -141,8 +183,11 @@ function App() {
     const saved = localStorage.getItem('theme');
     return saved || 'light';
   });
+  const [toast, setToast] = useState(null);
   const agregarVentaRef = useRef(agregarVenta);
   const metodoPagoRef = useRef(metodoPago);
+  const agregarGastoRef = useRef(agregarGasto);
+  const setToastRef = useRef(setToast);
   const recognitionRef = useRef(null);
   const gastoInputRef = useRef(null);
   
@@ -164,6 +209,14 @@ function App() {
   }, [metodoPago]);
 
   useEffect(() => {
+    agregarGastoRef.current = agregarGasto;
+  }, [agregarGasto]);
+
+  useEffect(() => {
+    setToastRef.current = setToast;
+  }, [setToast]);
+
+  useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (SpeechRecognition && !recognitionRef.current) {
@@ -173,13 +226,24 @@ function App() {
       rec.lang = 'es-MX';
       
       rec.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        const numero = textToNumber(transcript);
-        if (numero > 0) {
-          agregarVentaRef.current(numero, metodoPagoRef.current);
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        const result = parseVoiceCommand(transcript);
+        
+        if (result.success) {
+          if (result.tipo === 'gasto') {
+            agregarGastoRef.current(result.monto, 'Dictado por voz');
+            setToastRef.current(`✅ Gasto $${result.monto.toLocaleString()}`);
+            setTimeout(() => setToastRef.current(null), 2000);
+          } else {
+            agregarVentaRef.current(result.monto, result.metodo);
+            const metodoLabel = result.metodo === 'efectivo' ? 'Efec' : 'Trans';
+            setToastRef.current(`✅ Venta ${metodoLabel} $${result.monto.toLocaleString()}`);
+            setTimeout(() => setToastRef.current(null), 2000);
+          }
           setInputValue('');
         } else {
-          setInputValue(transcript);
+          setToastRef.current(`❌ ${result.error}`);
+          setTimeout(() => setToastRef.current(null), 2000);
         }
         setIsListening(false);
       };
@@ -614,6 +678,12 @@ function App() {
 
         {renderScreen()}
       </div>
+
+      {toast && (
+        <div className={`toast ${toast.startsWith('✅') ? 'success' : 'error'}`}>
+          {toast}
+        </div>
+      )}
     </>
   );
 }
