@@ -395,13 +395,14 @@ body {
 
 /* Compact Quick Summary */
 .quick-summary.compact {
-  padding: 8px;
-  margin: 0;
+  padding: 12px;
+  margin: 12px 0 0;
 }
 
 @media (min-width: 500px) {
   .quick-summary.compact {
     margin: 0 8px 6px;
+    padding: 8px;
   }
 }
 
@@ -469,8 +470,8 @@ body {
 
 /* Quick Mic Section */
 .quick-mic-section {
-  margin: 0;
-  padding: 8px;
+  margin: 12px 0 0;
+  padding: 12px;
   background: var(--bg-card);
   border-radius: 0;
   border: none;
@@ -480,6 +481,13 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
+}
+
+@media (min-width: 500px) {
+  .quick-mic-section {
+    margin: 0 8px 6px;
+    padding: 8px;
+  }
 }
 
 .metodo-pago-mini {
@@ -723,8 +731,15 @@ body {
 
 /* Ventas Section */
 .ventas-section {
-  margin: 0;
-  padding: 0 12px 12px;
+  margin: 12px 0;
+  padding: 12px;
+}
+
+@media (min-width: 500px) {
+  .ventas-section {
+    margin: 0;
+    padding: 0 12px 12px;
+  }
 }
 
 .filtros {
@@ -946,8 +961,8 @@ body {
 
 /* Gasto Form Section */
 .gasto-form-section {
-  margin: 0;
-  padding: 16px;
+  margin: 12px 0;
+  padding: 16px 12px;
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   min-height: calc(100vh - 60px);
@@ -1023,8 +1038,8 @@ body {
 
 /* Resumen Section */
 .resumen-section {
-  margin: 0;
-  padding: 16px;
+  margin: 12px 0;
+  padding: 16px 12px;
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -1082,12 +1097,12 @@ body {
   flex-direction: column;
   align-items: stretch;
   gap: 10px;
-  padding: 12px;
+  padding: 16px 12px;
   background: linear-gradient(135deg, var(--bg-elevated), rgba(251, 191, 36, 0.1));
   border-radius: 0;
   border: none;
   border-bottom: 2px dashed var(--border);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 @media (min-width: 500px) {
@@ -1175,7 +1190,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
+  padding: 12px;
   background: var(--bg-elevated);
   border-radius: 0;
   border-bottom: 1px solid var(--border);
@@ -1337,8 +1352,8 @@ body {
 
 /* Historial Section */
 .historial-section {
-  margin: 0;
-  padding: 16px;
+  margin: 12px 0;
+  padding: 16px 12px;
   border-top: 1px solid var(--border);
 }
 
@@ -1428,8 +1443,8 @@ body {
 
 /* Config Section */
 .config-section {
-  margin: 0;
-  padding: 16px;
+  margin: 12px 0;
+  padding: 16px 12px;
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   min-height: calc(100vh - 60px);
