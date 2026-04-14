@@ -6,7 +6,7 @@ export const parseVoiceCommand = (text) => {
   if (words.includes('inicio de caja')) {
     const amount = textToNumber(text);
     if (!amount || amount <= 0) {
-      return { success: false, error: 'Monto no válido' };
+      return { success: false, error: '❌ Monto no válido' };
     }
     return { success: true, type: 'initial-balance', amount };
   }
@@ -14,7 +14,7 @@ export const parseVoiceCommand = (text) => {
   if (words.includes('retiro')) {
     const amount = textToNumber(text);
     if (!amount || amount <= 0) {
-      return { success: false, error: 'Monto no válido' };
+      return { success: false, error: '❌ Monto no válido' };
     }
     const remaining = words.replace('retiro', '').replace(/\d+/g, '').trim();
     const wordList = remaining
@@ -44,7 +44,7 @@ export const parseVoiceCommand = (text) => {
   const amount = textToNumber(text);
 
   if (!amount || amount <= 0) {
-    return { success: false, error: 'Monto no válido' };
+    return { success: false, error: '❌ Monto no válido' };
   }
 
   if (type === 'expense') {
@@ -60,14 +60,14 @@ export const parseVoiceCommand = (text) => {
 
   if (type === 'sale') {
     if (!method) {
-      return { success: false, error: 'Indica Efec o Trans' };
+      return { success: false, error: '❌ Indica Efec o Trans' };
     }
     return { success: true, type: 'sale', method, amount };
   }
 
   if (method && !type) {
-    return { success: false, error: 'Indica Venta o Gasto' };
+    return { success: false, error: '❌ Indica Venta o Gasto' };
   }
 
-  return { success: false, error: 'Indica Venta o Gasto' };
+  return { success: false, error: '❌ Indica Venta o Gasto' };
 };
