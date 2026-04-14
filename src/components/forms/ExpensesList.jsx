@@ -1,11 +1,7 @@
 import { EditIcon } from '../Icons';
 import { formatCurrency } from '../../utils/formatters';
 
-const ExpensesList = ({ 
-  expenses, 
-  onEdit, 
-  onDelete 
-}) => {
+const ExpensesList = ({ expenses, onEdit, onDelete }) => {
   if (expenses.length === 0) return null;
 
   return (
@@ -19,14 +15,10 @@ const ExpensesList = ({
               <span className="gasto-simple-monto">-{formatCurrency(item.amount)}</span>
             </div>
             <div className="gasto-simple-actions">
-              <button 
-                className="gasto-action-btn edit"
-                onClick={() => onEdit(item)}
-                title="Editar"
-              >
+              <button className="gasto-action-btn edit" onClick={() => onEdit(item)} title="Editar">
                 <EditIcon />
               </button>
-              <button 
+              <button
                 className="gasto-action-btn delete"
                 onClick={() => onDelete(item)}
                 title="Eliminar"

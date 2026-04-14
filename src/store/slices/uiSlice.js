@@ -10,7 +10,7 @@ const loadInitialState = () => {
     paymentMethod: 'efectivo',
     expenseDescription: '',
     expenseAmount: '',
-    saleAmount: ''
+    saleAmount: '',
   };
 };
 
@@ -72,8 +72,8 @@ const uiSlice = createSlice({
 
     resetSaleForm: (state) => {
       state.saleAmount = '';
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -87,7 +87,7 @@ export const {
   setExpenseAmount,
   setSaleAmount,
   resetExpenseForm,
-  resetSaleForm
+  resetSaleForm,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

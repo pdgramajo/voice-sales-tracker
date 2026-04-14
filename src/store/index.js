@@ -11,11 +11,11 @@ const rootReducer = combineReducers({
   expenses: expensesReducer,
   ui: uiReducer,
   history: historyReducer,
-  stock: stockReducer
+  stock: stockReducer,
 });
 
 export const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
 });
 
 export const persistor = null;

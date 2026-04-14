@@ -1,7 +1,7 @@
 import ExpenseForm from '../forms/ExpenseForm';
 import ExpensesList from '../forms/ExpensesList';
 
-const ExpenseScreen = ({ 
+const ExpenseScreen = ({
   expenses,
   editing,
   description,
@@ -12,7 +12,7 @@ const ExpenseScreen = ({
   onCancel,
   onEdit,
   onDelete,
-  onShowToast
+  onShowToast,
 }) => {
   const handleDelete = (item) => {
     onDelete(item.id);
@@ -34,11 +34,7 @@ const ExpenseScreen = ({
         onSubmit={onSubmit}
         onCancel={onCancel}
       />
-      <ExpensesList 
-        expenses={expenses}
-        onEdit={onEdit}
-        onDelete={handleDelete}
-      />
+      <ExpensesList expenses={expenses} onEdit={onEdit} onDelete={handleDelete} />
     </section>
   );
 };

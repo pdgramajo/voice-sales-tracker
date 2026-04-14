@@ -11,7 +11,8 @@ const TransactionItem = ({ item, onDelete }) => {
     <li key={item.id} className={`venta-item ${getTypeClass()}`}>
       <div className="venta-info">
         <span className={`venta-monto ${getTypeClass()} ${item.paymentMethod || ''}`}>
-          {item.type === 'sale' ? '+' : '-'}{formatCurrency(item.amount)}
+          {item.type === 'sale' ? '+' : '-'}
+          {formatCurrency(item.amount)}
           {item.type === 'sale' && (
             <span className={`metodo-badge ${item.paymentMethod}`}>
               {item.paymentMethod === 'efectivo' ? 'Efec' : 'Trans'}
@@ -22,10 +23,7 @@ const TransactionItem = ({ item, onDelete }) => {
           {item.type === 'sale' ? item.dateString : item.description}
         </span>
       </div>
-      <button 
-        className="delete-btn"
-        onClick={() => onDelete(item)}
-      >
+      <button className="delete-btn" onClick={() => onDelete(item)}>
         ×
       </button>
     </li>

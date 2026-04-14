@@ -5,14 +5,14 @@ import { TrashIcon } from '../Icons';
 
 const StockScreen = ({ onBack, onShowToast }) => {
   const dispatch = useDispatch();
-  const entries = useSelector(state => state.stock.entries);
+  const entries = useSelector((state) => state.stock.entries);
   const [type, setType] = useState('entrada');
   const [description, setDescription] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!description.trim()) return;
-    
+
     dispatch(addEntry({ type, description: description.trim() }));
     setDescription('');
     onShowToast(`${type === 'entrada' ? 'Entrada' : 'Salida'} de stock agregada`);
@@ -23,13 +23,15 @@ const StockScreen = ({ onBack, onShowToast }) => {
     onShowToast('Entrada eliminada');
   };
 
-  const entriesCount = entries.filter(e => e.type === 'entrada').length;
-  const exitsCount = entries.filter(e => e.type === 'salida').length;
+  const entriesCount = entries.filter((e) => e.type === 'entrada').length;
+  const exitsCount = entries.filter((e) => e.type === 'salida').length;
 
   return (
     <section className="gasto-form-section">
       <div className="screen-header">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack}>
+          ←
+        </button>
         <h2>Stock</h2>
       </div>
 
@@ -79,10 +81,7 @@ const StockScreen = ({ onBack, onShowToast }) => {
                 </span>
                 <span className="stock-description">{entry.description}</span>
               </div>
-              <button 
-                className="delete-btn"
-                onClick={() => handleDelete(entry.id)}
-              >
+              <button className="delete-btn" onClick={() => handleDelete(entry.id)}>
                 <TrashIcon />
               </button>
             </li>

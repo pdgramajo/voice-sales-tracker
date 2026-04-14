@@ -2,23 +2,23 @@ import SummaryGrid from '../ui/SummaryGrid';
 import TransactionList from '../ui/TransactionList';
 import { MicIcon } from '../Icons';
 
-const HomeScreen = ({ 
-  salesCash, 
-  transferTotal, 
-  totalSales, 
+const HomeScreen = ({
+  salesCash,
+  transferTotal,
+  totalSales,
   cashInDrawer,
   items,
-  filter, 
+  filter,
   setFilter,
   counts,
   onDelete,
   isListening,
-  toggleListening
+  toggleListening,
 }) => {
   return (
     <>
       <section className="summary-section">
-        <SummaryGrid 
+        <SummaryGrid
           cash={salesCash}
           transfer={transferTotal}
           total={totalSales}
@@ -26,7 +26,7 @@ const HomeScreen = ({
         />
       </section>
 
-      <TransactionList 
+      <TransactionList
         items={items}
         filter={filter}
         setFilter={setFilter}
@@ -35,10 +35,7 @@ const HomeScreen = ({
         emptyMessage="No hay movimientos hoy"
       />
 
-      <button 
-        className={`fab-mic ${isListening ? 'listening' : ''}`}
-        onClick={toggleListening}
-      >
+      <button className={`fab-mic ${isListening ? 'listening' : ''}`} onClick={toggleListening}>
         {isListening ? '×' : <MicIcon />}
       </button>
     </>

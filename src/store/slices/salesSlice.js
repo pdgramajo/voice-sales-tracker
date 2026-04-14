@@ -7,13 +7,13 @@ const getTodayKey = () => {
 
 const calculateTotals = (sales, initialBalance) => {
   const cashSales = sales
-    .filter(s => s.paymentMethod === 'efectivo')
+    .filter((s) => s.paymentMethod === 'efectivo')
     .reduce((sum, s) => sum + s.amount, 0);
-  
+
   const transferTotal = sales
-    .filter(s => s.paymentMethod === 'transferencia')
+    .filter((s) => s.paymentMethod === 'transferencia')
     .reduce((sum, s) => sum + s.amount, 0);
-  
+
   return { cashTotal: initialBalance + cashSales, transferTotal };
 };
 
@@ -26,7 +26,7 @@ const loadInitialState = () => {
       return {
         sales: parsed.sales || [],
         initialBalance: parsed.initialBalance || 0,
-        ...totals
+        ...totals,
       };
     } catch {
       localStorage.removeItem(getTodayKey());
@@ -36,15 +36,18 @@ const loadInitialState = () => {
     sales: [],
     initialBalance: 0,
     cashTotal: 0,
-    transferTotal: 0
+    transferTotal: 0,
   };
 };
 
 const saveToStorage = (state) => {
-  localStorage.setItem(getTodayKey(), JSON.stringify({
-    sales: state.sales,
-    initialBalance: state.initialBalance
-  }));
+  localStorage.setItem(
+    getTodayKey(),
+    JSON.stringify({
+      sales: state.sales,
+      initialBalance: state.initialBalance,
+    })
+  );
 };
 
 const initialState = loadInitialState();
@@ -57,7 +60,7 @@ const salesSlice = createSlice({
       const { amount, paymentMethod } = action.payload;
       const now = new Date();
       const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-      
+
       let hours = now.getHours();
       const ampm = hours >= 12 ? 'pm' : 'am';
       hours = hours % 12;
@@ -65,17 +68,17 @@ const salesSlice = createSlice({
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
       const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`;
-      
+
       const dayName = days[now.getDay()];
       const day = now.getDate();
-      
+
       const sale = {
         id: Date.now(),
         type: 'sale',
         amount: Number(amount),
         paymentMethod,
         dateString: `${dayName} ${day} ${timeStr}`,
-        timestamp: now.getTime()
+        timestamp: now.getTime(),
       };
 
       state.sales.unshift(sale);
@@ -86,7 +89,7 @@ const salesSlice = createSlice({
     },
 
     deleteSale: (state, action) => {
-      state.sales = state.sales.filter(s => s.id !== action.payload);
+      state.sales = state.sales.filter((s) => s.id !== action.payload);
       const totals = calculateTotals(state.sales, state.initialBalance);
       state.cashTotal = totals.cashTotal;
       state.transferTotal = totals.transferTotal;
@@ -116,9 +119,10 @@ const salesSlice = createSlice({
       const totals = calculateTotals(sales, initialBalance);
       state.cashTotal = totals.cashTotal;
       state.transferTotal = totals.transferTotal;
-    }
-  }
+    },
+  },
 });
 
-export const { addSale, deleteSale, updateInitialBalance, clearDay, loadSales } = salesSlice.actions;
+export const { addSale, deleteSale, updateInitialBalance, clearDay, loadSales } =
+  salesSlice.actions;
 export default salesSlice.reducer;

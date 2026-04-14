@@ -6,11 +6,11 @@ const useVoiceRecognition = ({
   onAddExpense,
   onAddWithdrawal,
   onUpdateInitialBalance,
-  onShowToast
+  onShowToast,
 }) => {
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
-  
+
   const onAddSaleRef = useRef(onAddSale);
   const onAddExpenseRef = useRef(onAddExpense);
   const onAddWithdrawalRef = useRef(onAddWithdrawal);
@@ -39,24 +39,26 @@ const useVoiceRecognition = ({
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    
+
     if (SpeechRecognition && !recognitionRef.current) {
       const rec = new SpeechRecognition();
       rec.continuous = false;
       rec.interimResults = false;
       rec.lang = 'es-MX';
-      
+
       rec.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase();
         const result = parseVoiceCommand(transcript);
-        
+
         if (result.success) {
           if (result.type === 'initial-balance') {
             onUpdateInitialBalanceRef.current(result.amount);
             onShowToastRef.current(`Inicio caja $${result.amount.toLocaleString()}`);
           } else if (result.type === 'withdrawal') {
             onAddWithdrawalRef.current(result.amount, result.description);
-            onShowToastRef.current(`Retiro $${result.amount.toLocaleString()} ${result.description}`);
+            onShowToastRef.current(
+              `Retiro $${result.amount.toLocaleString()} ${result.description}`
+            );
           } else if (result.type === 'expense') {
             onAddExpenseRef.current(result.amount, result.description || 'Sin descripción');
             const descText = result.description ? ` - ${result.description}` : '';
@@ -71,15 +73,15 @@ const useVoiceRecognition = ({
         }
         setIsListening(false);
       };
-      
+
       rec.onerror = () => {
         setIsListening(false);
       };
-      
+
       rec.onend = () => {
         setIsListening(false);
       };
-      
+
       recognitionRef.current = rec;
     }
   }, []);
@@ -87,7 +89,7 @@ const useVoiceRecognition = ({
   const toggleListening = useCallback(() => {
     const rec = recognitionRef.current;
     if (!rec) return;
-    
+
     if (isListening) {
       rec.stop();
     } else {
@@ -104,7 +106,7 @@ const useVoiceRecognition = ({
   return {
     isListening,
     toggleListening,
-    recognitionRef
+    recognitionRef,
   };
 };
 

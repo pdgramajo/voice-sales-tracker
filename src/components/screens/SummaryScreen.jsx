@@ -1,15 +1,15 @@
 import { DownloadIcon, WalletIcon } from '../Icons';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
-const SummaryScreen = ({ 
-  initialBalance, 
-  cash, 
-  transfer, 
-  totalSales, 
-  totalExpenses, 
+const SummaryScreen = ({
+  initialBalance,
+  cash,
+  transfer,
+  totalSales,
+  totalExpenses,
   cashInDrawer,
   onUpdateInitialBalance,
-  onCloseDay
+  onCloseDay,
 }) => {
   return (
     <section className="resumen-section">
@@ -17,7 +17,7 @@ const SummaryScreen = ({
         <h2>Resumen del Día</h2>
         <p className="fecha">{formatDate()}</p>
       </div>
-      
+
       <div className="saldo-inicial-section">
         <label className="saldo-inicial-label">
           <WalletIcon /> Saldo Inicial
@@ -32,7 +32,7 @@ const SummaryScreen = ({
           step="0.01"
         />
       </div>
-      
+
       <div className="resumen-detailed">
         <div className="resumen-row">
           <span>Efectivo</span>
@@ -55,7 +55,7 @@ const SummaryScreen = ({
           <span>{formatCurrency(cashInDrawer)}</span>
         </div>
       </div>
-      
+
       <button className="close-day-btn" onClick={onCloseDay}>
         <DownloadIcon />
         Cerrar Día

@@ -13,7 +13,7 @@ const loadInitialState = () => {
       const totalExpenses = (parsed.expenses || []).reduce((sum, e) => sum + e.amount, 0);
       return {
         expenses: parsed.expenses || [],
-        totalExpenses
+        totalExpenses,
       };
     } catch {
       return { expenses: [], totalExpenses: 0 };
@@ -43,7 +43,7 @@ const expensesSlice = createSlice({
         type: 'expense',
         amount: Number(amount),
         description,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       state.expenses.unshift(expense);
       state.totalExpenses = state.expenses.reduce((sum, e) => sum + e.amount, 0);
@@ -57,7 +57,7 @@ const expensesSlice = createSlice({
         type: 'withdrawal',
         amount: Number(amount),
         description,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       state.expenses.unshift(withdrawal);
       state.totalExpenses = state.expenses.reduce((sum, e) => sum + e.amount, 0);
@@ -65,14 +65,14 @@ const expensesSlice = createSlice({
     },
 
     deleteExpense: (state, action) => {
-      state.expenses = state.expenses.filter(e => e.id !== action.payload);
+      state.expenses = state.expenses.filter((e) => e.id !== action.payload);
       state.totalExpenses = state.expenses.reduce((sum, e) => sum + e.amount, 0);
       saveToStorage(state);
     },
 
     updateExpense: (state, action) => {
       const { id, amount, description } = action.payload;
-      const expense = state.expenses.find(e => e.id === id);
+      const expense = state.expenses.find((e) => e.id === id);
       if (expense) {
         if (amount !== undefined) expense.amount = Number(amount);
         if (description !== undefined) expense.description = description;
@@ -89,9 +89,10 @@ const expensesSlice = createSlice({
     loadExpenses: (state, action) => {
       state.expenses = action.payload;
       state.totalExpenses = state.expenses.reduce((sum, e) => sum + e.amount, 0);
-    }
-  }
+    },
+  },
 });
 
-export const { addExpense, addWithdrawal, deleteExpense, updateExpense, clearDay, loadExpenses } = expensesSlice.actions;
+export const { addExpense, addWithdrawal, deleteExpense, updateExpense, clearDay, loadExpenses } =
+  expensesSlice.actions;
 export default expensesSlice.reducer;

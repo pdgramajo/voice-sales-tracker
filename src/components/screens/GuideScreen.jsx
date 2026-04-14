@@ -8,13 +8,13 @@ const GuideScreen = ({ onBack }) => {
         Volver
       </button>
       <h2>Guía de Comandos</h2>
-      
+
       <div className="guia-content">
         <div className="guia-section-title">
           <MicIcon />
           Comandos de Voz
         </div>
-        
+
         <div className="guia-group">
           <div className="guia-command-title">Ventas</div>
           <div className="guia-item">

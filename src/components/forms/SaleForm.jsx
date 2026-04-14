@@ -1,12 +1,6 @@
 import { MoneyIcon, TransferIcon } from '../Icons';
 
-const SaleForm = ({ 
-  paymentMethod, 
-  setPaymentMethod, 
-  amount, 
-  setAmount, 
-  onSubmit
-}) => {
+const SaleForm = ({ paymentMethod, setPaymentMethod, amount, setAmount, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const amountNum = parseFloat(amount);
@@ -19,14 +13,14 @@ const SaleForm = ({
     <section className="gasto-form-section">
       <h2>Agregar Venta</h2>
       <div className="metodo-pago">
-        <button 
+        <button
           type="button"
           className={`metodo-btn ${paymentMethod === 'efectivo' ? 'active' : ''}`}
           onClick={() => setPaymentMethod('efectivo')}
         >
           <MoneyIcon /> Efectivo
         </button>
-        <button 
+        <button
           type="button"
           className={`metodo-btn transferencia ${paymentMethod === 'transferencia' ? 'active' : ''}`}
           onClick={() => setPaymentMethod('transferencia')}
@@ -46,7 +40,11 @@ const SaleForm = ({
           required
           autoFocus
         />
-        <button type="submit" className="save-btn" style={{background: 'var(--success-efectivo)'}}>
+        <button
+          type="submit"
+          className="save-btn"
+          style={{ background: 'var(--success-efectivo)' }}
+        >
           Agregar Venta
         </button>
       </form>

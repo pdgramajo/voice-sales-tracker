@@ -28,22 +28,22 @@ const stockSlice = createSlice({
         id: Date.now(),
         type,
         description,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       state.entries.unshift(entry);
       saveToStorage(state.entries);
     },
 
     deleteEntry: (state, action) => {
-      state.entries = state.entries.filter(e => e.id !== action.payload);
+      state.entries = state.entries.filter((e) => e.id !== action.payload);
       saveToStorage(state.entries);
     },
 
     clearAllEntries: (state) => {
       state.entries = [];
       localStorage.removeItem('stock_entries');
-    }
-  }
+    },
+  },
 });
 
 export const { addEntry, deleteEntry, clearAllEntries } = stockSlice.actions;

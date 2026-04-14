@@ -1,11 +1,11 @@
-const ExpenseForm = ({ 
-  description, 
-  setDescription, 
-  amount, 
-  setAmount, 
+const ExpenseForm = ({
+  description,
+  setDescription,
+  amount,
+  setAmount,
   isEditing,
   onSubmit,
-  onCancel
+  onCancel,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,11 +40,7 @@ const ExpenseForm = ({
           {isEditing ? 'Guardar' : 'Agregar Gasto'}
         </button>
         {isEditing && (
-          <button 
-            type="button" 
-            className="cancel-btn"
-            onClick={onCancel}
-          >
+          <button type="button" className="cancel-btn" onClick={onCancel}>
             Cancelar
           </button>
         )}

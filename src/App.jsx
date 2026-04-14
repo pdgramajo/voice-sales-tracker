@@ -2,7 +2,13 @@ import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSale, deleteSale, updateInitialBalance, clearDay } from './store/slices/salesSlice';
 import { addExpense, deleteExpense, updateExpense } from './store/slices/expensesSlice';
-import { navigate, setFilter, setEditingExpense, resetExpenseForm, resetSaleForm } from './store/slices/uiSlice';
+import {
+  navigate,
+  setFilter,
+  setEditingExpense,
+  resetExpenseForm,
+  resetSaleForm,
+} from './store/slices/uiSlice';
 import { addDay } from './store/slices/historySlice';
 import { clearAllEntries } from './store/slices/stockSlice';
 import useVoiceRecognition from './hooks/useVoiceRecognition';
@@ -23,73 +29,81 @@ import './App.css';
 function App() {
   const dispatch = useDispatch();
   const { toast, show: showToast } = useToast();
-  
-  const sales = useSelector(state => state.sales.sales);
-  const expenses = useSelector(state => state.expenses.expenses);
-  const initialBalance = useSelector(state => state.sales.initialBalance);
-  const cashTotal = useSelector(state => state.sales.cashTotal);
-  const transferTotal = useSelector(state => state.sales.transferTotal);
-  const totalExpenses = useSelector(state => state.expenses.totalExpenses);
-  const history = useSelector(state => state.history.history);
-  const stockEntries = useSelector(state => state.stock.entries);
-  
-  const currentScreen = useSelector(state => state.ui.currentScreen);
-  const filter = useSelector(state => state.ui.filter);
-  const editingExpense = useSelector(state => state.ui.editingExpense);
-  const paymentMethod = useSelector(state => state.ui.paymentMethod);
-  const expenseDescription = useSelector(state => state.ui.expenseDescription);
-  const expenseAmount = useSelector(state => state.ui.expenseAmount);
-  const saleAmount = useSelector(state => state.ui.saleAmount);
+
+  const sales = useSelector((state) => state.sales.sales);
+  const expenses = useSelector((state) => state.expenses.expenses);
+  const initialBalance = useSelector((state) => state.sales.initialBalance);
+  const cashTotal = useSelector((state) => state.sales.cashTotal);
+  const transferTotal = useSelector((state) => state.sales.transferTotal);
+  const totalExpenses = useSelector((state) => state.expenses.totalExpenses);
+  const history = useSelector((state) => state.history.history);
+  const stockEntries = useSelector((state) => state.stock.entries);
+
+  const currentScreen = useSelector((state) => state.ui.currentScreen);
+  const filter = useSelector((state) => state.ui.filter);
+  const editingExpense = useSelector((state) => state.ui.editingExpense);
+  const paymentMethod = useSelector((state) => state.ui.paymentMethod);
+  const expenseDescription = useSelector((state) => state.ui.expenseDescription);
+  const expenseAmount = useSelector((state) => state.ui.expenseAmount);
+  const saleAmount = useSelector((state) => state.ui.saleAmount);
 
   const salesCash = sales
-    .filter(s => s.paymentMethod === 'efectivo')
+    .filter((s) => s.paymentMethod === 'efectivo')
     .reduce((sum, s) => sum + s.amount, 0);
-  
+
   const totalSales = salesCash + transferTotal;
   const balance = initialBalance + salesCash;
   const cashInDrawer = balance - totalExpenses;
-  const allItems = useMemo(() => 
-    [...sales, ...expenses].sort((a, b) => b.timestamp - a.timestamp),
+  const allItems = useMemo(
+    () => [...sales, ...expenses].sort((a, b) => b.timestamp - a.timestamp),
     [sales, expenses]
   );
-  
+
   const filteredItems = useMemo(() => {
-    if (filter === 'efectivo') return allItems.filter(i => i.type === 'sale' && i.paymentMethod === 'efectivo');
-    if (filter === 'transferencia') return allItems.filter(i => i.type === 'sale' && i.paymentMethod === 'transferencia');
-    if (filter === 'gastos') return allItems.filter(i => i.type === 'expense' || i.type === 'withdrawal');
+    if (filter === 'efectivo')
+      return allItems.filter((i) => i.type === 'sale' && i.paymentMethod === 'efectivo');
+    if (filter === 'transferencia')
+      return allItems.filter((i) => i.type === 'sale' && i.paymentMethod === 'transferencia');
+    if (filter === 'gastos')
+      return allItems.filter((i) => i.type === 'expense' || i.type === 'withdrawal');
     return allItems;
   }, [allItems, filter]);
 
-  const counts = useMemo(() => ({
-    total: allItems.length,
-    efectivo: sales.filter(s => s.paymentMethod === 'efectivo').length,
-    transferencia: sales.filter(s => s.paymentMethod === 'transferencia').length,
-    gastos: expenses.filter(e => e.type === 'expense' || e.type === 'withdrawal').length
-  }), [allItems, sales, expenses]);
+  const counts = useMemo(
+    () => ({
+      total: allItems.length,
+      efectivo: sales.filter((s) => s.paymentMethod === 'efectivo').length,
+      transferencia: sales.filter((s) => s.paymentMethod === 'transferencia').length,
+      gastos: expenses.filter((e) => e.type === 'expense' || e.type === 'withdrawal').length,
+    }),
+    [allItems, sales, expenses]
+  );
 
   const handleCloseDay = () => {
     if (sales.length > 0 || expenses.length > 0 || initialBalance > 0 || stockEntries.length > 0) {
       generatePDF([...sales], [...expenses], initialBalance, [...stockEntries]);
     }
-    
+
     const now = new Date();
     const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
     const dayName = days[now.getDay()];
     const day = now.getDate();
     const year = now.getFullYear();
-    
-    dispatch(addDay({
-      initialBalance,
-      totalSales,
-      totalExpenses,
-      cashTotal,
-      transferTotal,
-      cashInDrawer,
-      salesCount: sales.length,
-      expensesCount: expenses.length,
-      fecha: `${dayName} ${day} ${year}`
-    }));
-    
+
+    dispatch(
+      addDay({
+        initialBalance,
+        totalSales,
+        totalExpenses,
+        cashTotal,
+        transferTotal,
+        cashInDrawer,
+        salesCount: sales.length,
+        expensesCount: expenses.length,
+        fecha: `${dayName} ${day} ${year}`,
+      })
+    );
+
     dispatch(clearDay());
     dispatch(clearAllEntries());
   };
@@ -99,7 +113,7 @@ function App() {
     onAddExpense: (amount, description) => dispatch(addExpense({ amount, description })),
     onAddWithdrawal: (amount, description) => dispatch(addExpense({ amount, description })),
     onUpdateInitialBalance: (amount) => dispatch(updateInitialBalance(amount)),
-    onShowToast: showToast
+    onShowToast: showToast,
   });
 
   const handleExpenseSubmit = (amount, description) => {
@@ -143,7 +157,7 @@ function App() {
     switch (currentScreen) {
       case 'movimientos':
         return (
-          <HomeScreen 
+          <HomeScreen
             salesCash={salesCash}
             transferTotal={transferTotal}
             totalSales={totalSales}
@@ -160,7 +174,7 @@ function App() {
 
       case 'agregar-venta':
         return (
-          <SaleForm 
+          <SaleForm
             paymentMethod={paymentMethod}
             setPaymentMethod={(m) => dispatch({ type: 'ui/setPaymentMethod', payload: m })}
             amount={saleAmount}
@@ -171,7 +185,7 @@ function App() {
 
       case 'agregar-gasto':
         return (
-          <ExpenseScreen 
+          <ExpenseScreen
             expenses={expenses}
             editing={editingExpense}
             description={expenseDescription}
@@ -188,7 +202,7 @@ function App() {
 
       case 'resumen':
         return (
-          <SummaryScreen 
+          <SummaryScreen
             initialBalance={initialBalance}
             cash={cashTotal - initialBalance}
             transfer={transferTotal}
@@ -210,7 +224,9 @@ function App() {
         return <GuideScreen onBack={() => dispatch(navigate('config'))} />;
 
       case 'stock':
-        return <StockScreen onBack={() => dispatch(navigate('movimientos'))} onShowToast={showToast} />;
+        return (
+          <StockScreen onBack={() => dispatch(navigate('movimientos'))} onShowToast={showToast} />
+        );
 
       default:
         return null;
@@ -219,10 +235,8 @@ function App() {
 
   return (
     <>
-      <div className="container">
-        {renderScreen()}
-      </div>
-      <BottomNav 
+      <div className="container">{renderScreen()}</div>
+      <BottomNav
         currentScreen={currentScreen}
         onNavigate={(screen) => dispatch(navigate(screen))}
       />
