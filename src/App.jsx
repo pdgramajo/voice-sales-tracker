@@ -38,8 +38,13 @@ function App() {
   const expenseAmount = useSelector(state => state.ui.expenseAmount);
   const saleAmount = useSelector(state => state.ui.saleAmount);
 
-  const totalSales = cashTotal + transferTotal;
-  const cashInDrawer = cashTotal - totalExpenses;
+  const salesCash = sales
+    .filter(s => s.paymentMethod === 'efectivo')
+    .reduce((sum, s) => sum + s.amount, 0);
+  
+  const totalSales = salesCash + transferTotal;
+  const balance = initialBalance + salesCash;
+  const cashInDrawer = balance - totalExpenses;
   const allItems = useMemo(() => 
     [...sales, ...expenses].sort((a, b) => b.timestamp - a.timestamp),
     [sales, expenses]
@@ -135,7 +140,7 @@ function App() {
       case 'movimientos':
         return (
           <HomeScreen 
-            cashTotal={cashTotal}
+            salesCash={salesCash}
             transferTotal={transferTotal}
             totalSales={totalSales}
             cashInDrawer={cashInDrawer}

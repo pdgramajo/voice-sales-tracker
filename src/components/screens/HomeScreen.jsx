@@ -3,7 +3,7 @@ import TransactionList from '../ui/TransactionList';
 import { MicIcon } from '../Icons';
 
 const HomeScreen = ({ 
-  cashTotal, 
+  salesCash, 
   transferTotal, 
   totalSales, 
   cashInDrawer,
@@ -19,7 +19,7 @@ const HomeScreen = ({
     <>
       <section className="summary-section">
         <SummaryGrid 
-          cash={cashTotal}
+          cash={salesCash}
           transfer={transferTotal}
           total={totalSales}
           balance={cashInDrawer}
