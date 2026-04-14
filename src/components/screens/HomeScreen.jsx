@@ -19,7 +19,7 @@ const HomeScreen = ({
     <>
       <section className="summary-section">
         <SummaryGrid 
-          cash={cashTotal - transferTotal}
+          cash={cashTotal}
           transfer={transferTotal}
           total={totalSales}
           balance={cashInDrawer}
