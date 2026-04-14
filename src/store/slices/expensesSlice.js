@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const getTodayKey = () => {
+const getExpensesKey = () => {
   const now = new Date();
-  return `ventas_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}`;
+  return `gastos_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}`;
 };
 
 const loadInitialState = () => {
-  const savedData = localStorage.getItem(getTodayKey());
+  const savedData = localStorage.getItem(getExpensesKey());
   if (savedData) {
     try {
       const parsed = JSON.parse(savedData);
-      const totalExpenses = (parsed.expenses || []).reduce((sum, e) => sum + e.amount, 0);
+      const totalExpenses = (parsed || []).reduce((sum, e) => sum + e.amount, 0);
       return {
-        expenses: parsed.expenses || [],
+        expenses: parsed || [],
         totalExpenses,
       };
     } catch {
@@ -23,11 +23,7 @@ const loadInitialState = () => {
 };
 
 const saveToStorage = (state) => {
-  const todayKey = getTodayKey();
-  const existingData = localStorage.getItem(todayKey);
-  let data = existingData ? JSON.parse(existingData) : {};
-  data.expenses = state.expenses;
-  localStorage.setItem(todayKey, JSON.stringify(data));
+  localStorage.setItem(getExpensesKey(), JSON.stringify(state.expenses));
 };
 
 const initialState = loadInitialState();
@@ -84,6 +80,7 @@ const expensesSlice = createSlice({
     clearDay: (state) => {
       state.expenses = [];
       state.totalExpenses = 0;
+      localStorage.removeItem(getExpensesKey());
     },
 
     loadExpenses: (state, action) => {
