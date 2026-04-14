@@ -42,19 +42,19 @@ export const generatePDF = (sales, expenses, initialBalance = 0, stockEntries = 
   const fechaCompleta = `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]} ${now.getFullYear()}`;
 
   doc.setFillColor(10, 10, 15);
-  doc.rect(0, 0, pageWidth, 50, 'F');
+  doc.rect(0, 0, pageWidth, 25, 'F');
 
   doc.setTextColor(212, 168, 83);
-  doc.setFontSize(24);
+  doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('Reporte del Día', pageWidth / 2, 22, { align: 'center' });
+  doc.text('Reporte del Día', pageWidth / 2, 11, { align: 'center' });
 
   doc.setTextColor(161, 161, 166);
-  doc.setFontSize(12);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text(fechaCompleta, pageWidth / 2, 35, { align: 'center' });
+  doc.text(fechaCompleta, pageWidth / 2, 17, { align: 'center' });
 
-  let yPos = 60;
+  let yPos = 35;
 
   if (initialBalance > 0) {
     doc.setFillColor(255, 251, 235);
