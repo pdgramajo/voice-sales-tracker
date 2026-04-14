@@ -58,7 +58,7 @@ const SummaryScreen = ({
 
       <button className="close-day-btn" onClick={onCloseDay}>
         <DownloadIcon />
-        Cerrar Día
+        Cerrar y Guardar Día
       </button>
     </section>
   );

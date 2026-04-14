@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addSale, deleteSale, updateInitialBalance, clearDay } from './store/slices/salesSlice';
+import { addSale, deleteSale, updateInitialBalance } from './store/slices/salesSlice';
 import { addExpense, deleteExpense, updateExpense } from './store/slices/expensesSlice';
 import {
   navigate,
@@ -10,7 +10,6 @@ import {
   resetSaleForm,
 } from './store/slices/uiSlice';
 import { addDay } from './store/slices/historySlice';
-import { clearAllEntries } from './store/slices/stockSlice';
 import useVoiceRecognition from './hooks/useVoiceRecognition';
 import { useToast } from './hooks/useToast';
 import BottomNav from './components/ui/BottomNav';
@@ -18,6 +17,7 @@ import Toast from './components/ui/Toast';
 import HomeScreen from './components/screens/HomeScreen';
 import SummaryScreen from './components/screens/SummaryScreen';
 import HistoryScreen from './components/screens/HistoryScreen';
+import DayDetailScreen from './components/screens/DayDetailScreen';
 import ConfigScreen from './components/screens/ConfigScreen';
 import GuideScreen from './components/screens/GuideScreen';
 import StockScreen from './components/screens/StockScreen';
@@ -29,6 +29,7 @@ import './App.css';
 function App() {
   const dispatch = useDispatch();
   const { toast, show: showToast } = useToast();
+  const [selectedDay, setSelectedDay] = useState(null);
 
   const sales = useSelector((state) => state.sales.sales);
   const expenses = useSelector((state) => state.expenses.expenses);
@@ -82,30 +83,59 @@ function App() {
   const handleCloseDay = () => {
     if (sales.length > 0 || expenses.length > 0 || initialBalance > 0 || stockEntries.length > 0) {
       generatePDF([...sales], [...expenses], initialBalance, [...stockEntries]);
+
+      const now = new Date();
+      const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+      const months = [
+        'enero',
+        'febrero',
+        'marzo',
+        'abril',
+        'mayo',
+        'junio',
+        'julio',
+        'agosto',
+        'septiembre',
+        'octubre',
+        'noviembre',
+        'diciembre',
+      ];
+      const dayName = days[now.getDay()];
+      const day = now.getDate();
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+
+      dispatch(
+        addDay({
+          summary: {
+            fecha: `${dayName} ${day} ${month} ${year}`,
+            initialBalance,
+            cashTotal,
+            transferTotal,
+            totalSales,
+            totalExpenses,
+            cashInDrawer,
+          },
+          sales: [...sales],
+          expenses: [...expenses],
+          stock: [...stockEntries],
+        })
+      );
+
+      showToast('Día guardado en historial');
+    } else {
+      showToast('No hay transacciones para guardar');
     }
+  };
 
-    const now = new Date();
-    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-    const dayName = days[now.getDay()];
-    const day = now.getDate();
-    const year = now.getFullYear();
+  const handleSelectDay = (day) => {
+    setSelectedDay(day);
+    dispatch(navigate('dia-detalle'));
+  };
 
-    dispatch(
-      addDay({
-        initialBalance,
-        totalSales,
-        totalExpenses,
-        cashTotal,
-        transferTotal,
-        cashInDrawer,
-        salesCount: sales.length,
-        expensesCount: expenses.length,
-        fecha: `${dayName} ${day} ${year}`,
-      })
-    );
-
-    dispatch(clearDay());
-    dispatch(clearAllEntries());
+  const handleBackFromDetail = () => {
+    setSelectedDay(null);
+    dispatch(navigate('historial'));
   };
 
   const { isListening, toggleListening } = useVoiceRecognition({
@@ -204,7 +234,7 @@ function App() {
         return (
           <SummaryScreen
             initialBalance={initialBalance}
-            cash={cashTotal - initialBalance}
+            cash={salesCash}
             transfer={transferTotal}
             totalSales={totalSales}
             totalExpenses={totalExpenses}
@@ -215,7 +245,16 @@ function App() {
         );
 
       case 'historial':
-        return <HistoryScreen history={history} />;
+        return (
+          <HistoryScreen
+            history={history}
+            onSelectDay={handleSelectDay}
+            onBack={() => dispatch(navigate('movimientos'))}
+          />
+        );
+
+      case 'dia-detalle':
+        return <DayDetailScreen day={selectedDay} onBack={handleBackFromDetail} />;
 
       case 'config':
         return <ConfigScreen onNavigate={(screen) => dispatch(navigate(screen))} />;

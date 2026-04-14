@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const getHistoryKey = () => 'ventas_historico';
 
+const MAX_HISTORY_DAYS = 30;
+
 const loadInitialState = () => {
   const history = localStorage.getItem(getHistoryKey());
   return {
@@ -16,28 +18,19 @@ const historySlice = createSlice({
   initialState,
   reducers: {
     addDay: (state, action) => {
-      const {
-        initialBalance,
-        totalSales,
-        totalExpenses,
-        cashTotal,
-        transferTotal,
-        cashInDrawer,
-        salesCount,
-        expensesCount,
-        fecha,
-      } = action.payload;
+      const { summary, sales, expenses, stock } = action.payload;
+
       state.history.push({
-        fecha,
-        initialBalance,
-        totalSales,
-        totalExpenses,
-        cashTotal,
-        transferTotal,
-        cashInDrawer,
-        salesCount,
-        expensesCount,
+        ...summary,
+        sales: [...sales],
+        expenses: [...expenses],
+        stock: [...stock],
       });
+
+      if (state.history.length > MAX_HISTORY_DAYS) {
+        state.history = state.history.slice(-MAX_HISTORY_DAYS);
+      }
+
       localStorage.setItem(getHistoryKey(), JSON.stringify(state.history));
     },
 
