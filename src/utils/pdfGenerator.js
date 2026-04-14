@@ -45,12 +45,12 @@ export const generatePDF = (sales, expenses, initialBalance = 0, stockEntries = 
   doc.rect(0, 0, pageWidth, 25, 'F');
 
   doc.setTextColor(212, 168, 83);
-  doc.setFontSize(14);
+  doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.text('Reporte del Día', pageWidth / 2, 11, { align: 'center' });
 
   doc.setTextColor(161, 161, 166);
-  doc.setFontSize(9);
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(fechaCompleta, pageWidth / 2, 17, { align: 'center' });
 
