@@ -1,29 +1,33 @@
 const Filters = ({ filter, setFilter, counts }) => {
   return (
-    <div className="filtros">
+    <div className="filters-container">
       <button
-        className={`filtro-btn ${filter === 'todos' ? 'active' : ''}`}
+        className={`filter-chip ${filter === 'todos' ? 'active' : ''}`}
         onClick={() => setFilter('todos')}
       >
-        Todos ({counts.total})
+        Todos
+        <span className="chip-count">{counts.total}</span>
       </button>
       <button
-        className={`filtro-btn ${filter === 'efectivo' ? 'active' : ''}`}
+        className={`filter-chip efectivo ${filter === 'efectivo' ? 'active' : ''}`}
         onClick={() => setFilter('efectivo')}
       >
-        Efec ({counts.efectivo})
+        Efectivo
+        <span className="chip-count">{counts.efectivo}</span>
       </button>
       <button
-        className={`filtro-btn ${filter === 'transferencia' ? 'active' : ''}`}
+        className={`filter-chip transferencia ${filter === 'transferencia' ? 'active' : ''}`}
         onClick={() => setFilter('transferencia')}
       >
-        Trans ({counts.transferencia})
+        Transferencia
+        <span className="chip-count">{counts.transferencia}</span>
       </button>
       <button
-        className={`filtro-btn ${filter === 'gastos' ? 'active' : ''}`}
+        className={`filter-chip gastos ${filter === 'gastos' ? 'active' : ''}`}
         onClick={() => setFilter('gastos')}
       >
-        Gastos ({counts.gastos})
+        Gastos
+        <span className="chip-count">{counts.gastos}</span>
       </button>
     </div>
   );

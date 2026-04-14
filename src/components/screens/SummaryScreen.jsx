@@ -18,42 +18,47 @@ const SummaryScreen = ({
         <p className="fecha">{formatDate()}</p>
       </div>
 
-      <div className="saldo-inicial-section">
-        <label className="saldo-inicial-label">
-          <WalletIcon /> Saldo Inicial
-        </label>
+      <div className="saldo-inicial-card">
+        <div className="saldo-label">
+          <WalletIcon />
+          <span>Saldo Inicial</span>
+        </div>
         <input
           type="number"
-          className="saldo-inicial-input"
+          className="saldo-input"
           value={initialBalance || ''}
           onChange={(e) => onUpdateInitialBalance(e.target.value)}
-          placeholder="0.00"
+          placeholder="0"
           min="0"
-          step="0.01"
+          step="1"
         />
       </div>
 
-      <div className="resumen-detailed">
-        <div className="resumen-row">
-          <span>Efectivo</span>
-          <span className="green">{formatCurrency(cash)}</span>
+      <div className="resumen-cards">
+        <div className="resumen-card efectivo">
+          <span className="card-label">Efectivo</span>
+          <span className="card-value">{formatCurrency(cash)}</span>
         </div>
-        <div className="resumen-row">
-          <span>Transferencia</span>
-          <span className="blue">{formatCurrency(transfer)}</span>
+        <div className="resumen-card transferencia">
+          <span className="card-label">Transferencia</span>
+          <span className="card-value">{formatCurrency(transfer)}</span>
         </div>
-        <div className="resumen-row total">
+      </div>
+
+      <div className="resumen-total-card">
+        <div className="total-row">
           <span>Total Ventas</span>
-          <span className="green">{formatCurrency(totalSales)}</span>
+          <span className="total-value">{formatCurrency(totalSales)}</span>
         </div>
-        <div className="resumen-row">
+        <div className="total-row">
           <span>Gastos</span>
-          <span className="red">-{formatCurrency(totalExpenses)}</span>
+          <span className="expense-value">-{formatCurrency(totalExpenses)}</span>
         </div>
-        <div className="resumen-row final">
-          <span>En Caja</span>
-          <span>{formatCurrency(cashInDrawer)}</span>
-        </div>
+      </div>
+
+      <div className={`resumen-final-card ${cashInDrawer >= 0 ? 'positive' : 'negative'}`}>
+        <span className="final-label">Efectivo en Caja</span>
+        <span className="final-value">{formatCurrency(cashInDrawer)}</span>
       </div>
 
       <button className="close-day-btn" onClick={onCloseDay}>
