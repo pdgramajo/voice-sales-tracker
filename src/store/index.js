@@ -4,12 +4,14 @@ import salesReducer from './slices/salesSlice';
 import expensesReducer from './slices/expensesSlice';
 import uiReducer from './slices/uiSlice';
 import historyReducer from './slices/historySlice';
+import stockReducer from './slices/stockSlice';
 
 const rootReducer = combineReducers({
   sales: salesReducer,
   expenses: expensesReducer,
   ui: uiReducer,
-  history: historyReducer
+  history: historyReducer,
+  stock: stockReducer
 });
 
 export const store = configureStore({

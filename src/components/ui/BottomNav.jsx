@@ -1,7 +1,7 @@
-import { HomeIcon, WalletIcon, PlusIcon, MoneyIcon, HistoryIcon, SettingsIcon } from '../Icons';
+import { HomeIcon, WalletIcon, PlusIcon, MoneyIcon, PackageIcon, SettingsIcon } from '../Icons';
 
 const BottomNav = ({ currentScreen, onNavigate }) => {
-  const isConfigActive = currentScreen === 'config' || currentScreen === 'guia';
+  const isConfigActive = currentScreen === 'config' || currentScreen === 'guia' || currentScreen === 'stock';
   
   return (
     <nav className="bottom-nav">
@@ -33,11 +33,11 @@ const BottomNav = ({ currentScreen, onNavigate }) => {
         Gasto
       </button>
       <button 
-        className={`nav-item ${currentScreen === 'historial' ? 'active' : ''}`}
-        onClick={() => onNavigate('historial')}
+        className={`nav-item ${currentScreen === 'stock' ? 'active' : ''}`}
+        onClick={() => onNavigate('stock')}
       >
-        <HistoryIcon />
-        Historial
+        <PackageIcon />
+        Stock
       </button>
       <button 
         className={`nav-item ${isConfigActive ? 'active' : ''}`}

@@ -4,6 +4,7 @@ import { addSale, deleteSale, updateInitialBalance, clearDay } from './store/sli
 import { addExpense, deleteExpense, updateExpense } from './store/slices/expensesSlice';
 import { navigate, setFilter, setEditingExpense, resetExpenseForm, resetSaleForm } from './store/slices/uiSlice';
 import { addDay } from './store/slices/historySlice';
+import { clearAllEntries } from './store/slices/stockSlice';
 import useVoiceRecognition from './hooks/useVoiceRecognition';
 import { useToast } from './hooks/useToast';
 import BottomNav from './components/ui/BottomNav';
@@ -13,6 +14,7 @@ import SummaryScreen from './components/screens/SummaryScreen';
 import HistoryScreen from './components/screens/HistoryScreen';
 import ConfigScreen from './components/screens/ConfigScreen';
 import GuideScreen from './components/screens/GuideScreen';
+import StockScreen from './components/screens/StockScreen';
 import SaleForm from './components/forms/SaleForm';
 import ExpenseScreen from './components/screens/ExpenseScreen';
 import { generatePDF } from './utils/pdfGenerator';
@@ -29,6 +31,7 @@ function App() {
   const transferTotal = useSelector(state => state.sales.transferTotal);
   const totalExpenses = useSelector(state => state.expenses.totalExpenses);
   const history = useSelector(state => state.history.history);
+  const stockEntries = useSelector(state => state.stock.entries);
   
   const currentScreen = useSelector(state => state.ui.currentScreen);
   const filter = useSelector(state => state.ui.filter);
@@ -65,8 +68,8 @@ function App() {
   }), [allItems, sales, expenses]);
 
   const handleCloseDay = () => {
-    if (sales.length > 0 || expenses.length > 0 || initialBalance > 0) {
-      generatePDF([...sales], [...expenses], initialBalance);
+    if (sales.length > 0 || expenses.length > 0 || initialBalance > 0 || stockEntries.length > 0) {
+      generatePDF([...sales], [...expenses], initialBalance, [...stockEntries]);
     }
     
     const now = new Date();
@@ -88,6 +91,7 @@ function App() {
     }));
     
     dispatch(clearDay());
+    dispatch(clearAllEntries());
   };
 
   const { isListening, toggleListening } = useVoiceRecognition({
@@ -204,6 +208,9 @@ function App() {
 
       case 'guia':
         return <GuideScreen onBack={() => dispatch(navigate('config'))} />;
+
+      case 'stock':
+        return <StockScreen onBack={() => dispatch(navigate('movimientos'))} onShowToast={showToast} />;
 
       default:
         return null;
