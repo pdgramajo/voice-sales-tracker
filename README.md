@@ -2,6 +2,8 @@
 
 A modern voice-controlled daily sales, expenses, and withdrawals tracking application built with React. Dictate transactions in Spanish using voice commands, track sales by payment method, manage expenses, track inventory stock, view daily summaries, and export reports as PDF.
 
+**Live Demo:** [https://pdgramajo.github.io/voice-sales-tracker/](https://pdgramajo.github.io/voice-sales-tracker/)
+
 ## Features
 
 - **Voice Commands**: Dictate transactions in Spanish with full descriptions
@@ -13,12 +15,13 @@ A modern voice-controlled daily sales, expenses, and withdrawals tracking applic
 - **Expense & Withdrawal Tracking**: Add expenses with descriptions and withdrawals with comments
 - **Edit & Delete**: Edit descriptions and amounts, or delete transactions
 - **Real-time Summary**: View totals in a 2x2 grid (Ventas en Efectivo, Transferencias, Total Ventas, Efectivo en Caja)
-- **Filter with Counts**: Filter transactions with real-time counts per category
+- **Filter with Counts**: Filter transactions with colored grid showing per-category counts
 - **Stock Management**: Track inventory entries and exits with descriptions
-- **Historical Records**: Access summaries from previous days
+- **Historical Records**: Access summaries from previous days organized by month with expandable sections
+- **Day Details**: View detailed breakdown with tabs (All/Sales/Expenses/Stock)
 - **PDF Export**: Download a formatted daily report with sales, expenses, and stock movements
 - **PWA Installable**: Works 100% offline on your phone as an installed app
-- **Premium Dark Theme**: "Night Owl Refined" design with amber accents
+- **Premium Dark Theme**: "Night Owl Refined" design with amber accents optimized for mobile
 - **Bottom Navigation**: Easy navigation with Home, Summary, Add Sale, Expense, Stock, and More
 - **Local Storage**: All data persists in your browser
 
@@ -29,6 +32,7 @@ A modern voice-controlled daily sales, expenses, and withdrawals tracking applic
 - **jsPDF** for PDF generation
 - **Web Speech API** for voice recognition
 - **Vite PWA Plugin** for offline support and app installation
+- **Jest** for testing
 - **Prettier + ESLint** for code quality
 - **Husky + lint-staged** for pre-commit hooks
 
@@ -58,6 +62,7 @@ The app will be available at `http://localhost:5173`
 | `npm run dev`          | Start development server         |
 | `npm run build`        | Build for production             |
 | `npm run lint`         | Run ESLint                       |
+| `npm run test`         | Run Jest tests                   |
 | `npm run format`       | Format code with Prettier        |
 | `npm run format:check` | Check formatting without changes |
 | `npm run preview`      | Preview production build         |
@@ -82,8 +87,10 @@ The app will be available at `http://localhost:5173`
 3. **Edit/Delete**: Go to **Gasto** section → Tap edit icon to edit or delete
 4. **Stock**: Tap **Stock** → Select Entrada/Salida → Enter description → Save
 5. **View Summary**: Check the 2x2 grid on **Home** for quick totals
-6. **Close Day**: Tap **Resumen** → Set starting cash (optional) → Tap "Cerrar Día" to download PDF and save to history
-7. **View History**: Tap **Más** → **Historial**
+6. **Filter Transactions**: Tap filter buttons (Todos/Efectivo/Transferencia/Gastos) with color-coded counts
+7. **Close Day**: Tap **Resumen** → Set starting cash (optional) → Tap "Cerrar Día" to download PDF and save to history
+8. **View History**: Tap **Más** → **Historial** → Expand months to see days
+9. **Day Details**: Tap any day in history → View breakdown by tabs (Todos/Ventas/Gastos/Stock)
 
 ### Install as Mobile App
 
@@ -117,11 +124,13 @@ The app calculates totals from the transactions:
 
 ## Deploy
 
+**Live URL:** [https://pdgramajo.github.io/voice-sales-tracker/](https://pdgramajo.github.io/voice-sales-tracker/)
+
 ```bash
 npm run deploy
 ```
 
-This will build the app and deploy to GitHub Pages.
+This will build the app and deploy to GitHub Pages. The app is configured as a PWA and works offline once loaded.
 
 ## Project Structure
 
@@ -131,6 +140,9 @@ voice-sales-tracker/
 │   ├── favicon.svg              # App icon
 │   └── pwa-*.png               # PWA icons
 ├── src/
+│   ├── __tests__/
+│   │   ├── logic/              # Logic tests (textToNumber, voiceParser)
+│   │   └── utils/              # Utility tests (formatters)
 │   ├── components/
 │   │   ├── forms/             # Form components
 │   │   ├── screens/            # Screen components
