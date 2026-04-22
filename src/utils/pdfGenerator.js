@@ -8,16 +8,15 @@ const formatCurrency = (amount) => {
 };
 
 export const generatePDF = (sales, expenses, initialBalance = 0, stockEntries = []) => {
-  const cashSales = sales
+  const cashSalesTotal = sales
     .filter((v) => v.paymentMethod === 'efectivo')
     .reduce((sum, v) => sum + v.amount, 0);
   const transferTotal = sales
     .filter((v) => v.paymentMethod === 'transferencia')
     .reduce((sum, v) => sum + v.amount, 0);
-  const cashTotal = initialBalance + cashSales;
-  const totalSales = cashSales + transferTotal;
+  const totalSales = cashSalesTotal + transferTotal;
   const totalExpenses = expenses.reduce((sum, g) => sum + g.amount, 0);
-  const cashInDrawer = cashTotal - totalExpenses;
+  const cashInDrawer = initialBalance + cashSalesTotal - totalExpenses;
 
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -41,55 +40,117 @@ export const generatePDF = (sales, expenses, initialBalance = 0, stockEntries = 
 
   const fechaCompleta = `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]} ${now.getFullYear()}`;
 
-  doc.setFillColor(10, 10, 15);
-  doc.rect(0, 0, pageWidth, 25, 'F');
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(0.5);
+  doc.line(15, 30, pageWidth - 15, 30);
 
-  doc.setTextColor(212, 168, 83);
+  doc.setTextColor(0, 0, 0);
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
-  doc.text('Reporte del Día', pageWidth / 2, 11, { align: 'center' });
+  doc.text('Reporte de Operaciones Diarias', 15, 15);
 
-  doc.setTextColor(161, 161, 166);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text(fechaCompleta, pageWidth / 2, 17, { align: 'center' });
+  doc.setTextColor(102, 102, 102);
+  doc.text(`Generado el ${fechaCompleta}`, 15, 22);
 
-  let yPos = 35;
+  let yPos = 40;
 
-  if (initialBalance > 0) {
-    doc.setFillColor(255, 251, 235);
-    doc.rect(15, yPos - 5, pageWidth - 30, 14, 'F');
-    doc.setTextColor(180, 83, 9);
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Saldo Inicial: ${formatCurrency(initialBalance)}`, 20, yPos + 4);
-    yPos += 20;
-  }
+  const leftCol = 15;
+  const rightCol = pageWidth / 2 + 10;
+  const rowHeight = 8;
 
-  doc.setTextColor(50, 50, 55);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(0, 0, 0);
+  doc.text('Flujo de Efectivo', leftCol, yPos);
+  yPos += 6;
+
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.3);
+  doc.line(leftCol, yPos, leftCol + 80, yPos);
+  yPos += 8;
+
   doc.setFontSize(11);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`Total Ventas: ${formatCurrency(totalSales)}`, 20, yPos);
-  doc.text(`Total Gastos: ${formatCurrency(totalExpenses)}`, pageWidth - 20, yPos, {
-    align: 'right',
-  });
+  doc.setFont('helvetica', 'normal');
 
-  yPos += 10;
+  doc.setTextColor(80, 80, 85);
+  doc.text('Saldo Inicial', leftCol, yPos);
+  doc.setTextColor(0, 0, 0);
+  doc.text(formatCurrency(initialBalance), leftCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight;
+
+  doc.setTextColor(80, 80, 85);
+  doc.text('(+) Ventas en Efectivo', leftCol, yPos);
+  doc.setTextColor(0, 0, 0);
+  doc.text(formatCurrency(cashSalesTotal), leftCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight;
+
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(0.5);
+  doc.line(leftCol, yPos, leftCol + 80, yPos);
+  yPos += 4;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(0, 0, 0);
+  doc.text('(=) Total Efectivo', leftCol, yPos);
+  doc.text(formatCurrency(initialBalance + cashSalesTotal), leftCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight;
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(100, 100, 105);
-  doc.text(`Efectivo: ${formatCurrency(cashTotal)}`, 20, yPos);
-  doc.text(`Transferencia: ${formatCurrency(transferTotal)}`, pageWidth - 20, yPos, {
-    align: 'right',
-  });
+  doc.setTextColor(80, 80, 85);
+  doc.text('(-) Gastos', leftCol, yPos);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`(${formatCurrency(totalExpenses)})`, leftCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight + 2;
 
-  yPos += 10;
-  doc.setTextColor(34, 197, 94);
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(1);
+  doc.line(leftCol, yPos, leftCol + 80, yPos);
+  yPos += 4;
+
   doc.setFont('helvetica', 'bold');
-  doc.text(`En Caja: ${formatCurrency(cashInDrawer)}`, pageWidth / 2, yPos, { align: 'center' });
+  doc.setFontSize(12);
+  doc.text('(=) Efectivo en Caja', leftCol, yPos);
+  doc.text(formatCurrency(cashInDrawer), leftCol + 80, yPos, { align: 'right' });
 
-  yPos += 15;
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(0, 0, 0);
+  doc.text('Ventas del Día', rightCol, 51);
+  yPos = 57;
+
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.3);
+  doc.line(rightCol, yPos, rightCol + 80, yPos);
+  yPos += 8;
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+
+  doc.setTextColor(80, 80, 85);
+  doc.text('Ventas en Efectivo', rightCol, yPos);
+  doc.setTextColor(0, 0, 0);
+  doc.text(formatCurrency(cashSalesTotal), rightCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight;
+
+  doc.setTextColor(80, 80, 85);
+  doc.text('Ventas en Transferencia', rightCol, yPos);
+  doc.setTextColor(0, 0, 0);
+  doc.text(formatCurrency(transferTotal), rightCol + 80, yPos, { align: 'right' });
+  yPos += rowHeight + 2;
+
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(1);
+  doc.line(rightCol, yPos, rightCol + 80, yPos);
+  yPos += 4;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.text('Total Ventas', rightCol, yPos);
+  doc.text(formatCurrency(totalSales), rightCol + 80, yPos, { align: 'right' });
+
+  yPos += 20;
 
   if (stockEntries.length > 0) {
     doc.setTextColor(139, 92, 246);
@@ -244,7 +305,7 @@ export const generatePDF = (sales, expenses, initialBalance = 0, stockEntries = 
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(`EN CAJA: ${formatCurrency(cashInDrawer)}`, pageWidth - 25, yPos + 9.5, {
+  doc.text(`EFECTIVO EN CAJA: ${formatCurrency(cashInDrawer)}`, pageWidth - 25, yPos + 9.5, {
     align: 'right',
   });
 
